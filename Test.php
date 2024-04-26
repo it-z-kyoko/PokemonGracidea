@@ -9,7 +9,7 @@ $text = "
     Tera Type: Ground
     Ability: Snow Warning
     EVs: 168 HP / 252 SpA / 88 Spe
-    IVs: 0 Atk
+    IVs: 0 Atk / 14 SpA
     Blizzard
     Earth Power
     Leaf Storm
