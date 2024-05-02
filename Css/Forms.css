@@ -1,0 +1,45 @@
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Changed width to 100% for better responsiveness */
+    align-items: center;
+    justify-content: center;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: left; /* Align label text to the left */
+}
+
+input,
+textarea, select {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ffffff;
+    font-family: inherit;
+    font-size: inherit;
+    width: 100%; /* Make input and textarea width 100% */
+}
+
+input[type="submit"] {
+    background-color: #003c8b;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    width: 100%; /* Make submit button width 100% */
+}
+
+input[type="submit"]:hover {
+    background-color: #0057c9;
+}
+
+textarea {
+    height: 200px;
+    resize: vertical; /* Allow vertical resizing of the textarea */
+}
