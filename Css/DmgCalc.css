@@ -1,0 +1,19 @@
+table.StatTable {
+    text-align: center;
+  }
+  table.StatTable td, table.StatTable th {
+    padding: 3px 2px;
+  }
+  table.StatTable tbody td {
+    font-size: 13px;
+  }
+  table.StatTable thead {
+    background: #DDDDDD;
+  }
+  table.StatTable thead th {
+    font-weight: normal;
+    text-align: center;
+  }
+  table.StatTable tfoot {
+    font-weight: bold;
+  }

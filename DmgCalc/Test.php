@@ -3,13 +3,12 @@ include_once("../Global/CalcFunctions.php");
 include_once("../Classes/Pokemon.php");
 
 $pokemon = new Pokemon(173, 'Skarmory');
+$pokemon->setLevel(60);
 
 // Konvertiere das Pokemon-Objekt in JSON
 $pokemon_json = json_encode($pokemon);
-
-// Gib das JSON zurück
-echo $pokemon_json;
 ?>
+
 
 
 <!DOCTYPE html>
@@ -18,6 +17,7 @@ echo $pokemon_json;
 <head>
     <meta charset="UTF-8">
     <title>Dynamische Berechnung</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,70 +29,74 @@ echo $pokemon_json;
             margin-bottom: 10px;
         }
     </style>
+    <link rel="stylesheet" href="../Css/DmgCalc.css">
+
 </head>
 
-<body>
+<body onload="bodyload()" id="body">
+
+
     <label for="HPEV">Geben Sie die Basiswerte ein:</label>
-    <input type="hidden" id="AtkBaseStat" value="<?php echo $pokemon->getAtkBase();?>">
-    <input type="number" id="HPEV" min="0" max="252" step="4" oninput="berechne()">
-    <input type="number" id="AtkEV" min="0" max="252" step="4" oninput="berechne()">
-    <!-- Weitere Input-Felder für die anderen Werte hier einfügen -->
+    <input type="hidden" id="level" value="<?php echo $pokemon->getLevel(); ?>">
+    <table class="StatTable">
+        <thead>
+            <tr>
+                <th>Stat:</th>
+                <th>Basestat:</th>
+                <th>EV-Value</th>
+                <th>IV-Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>HP:</td>
+                <td><input type="number" id="HPBaseStat" value="<?php echo $pokemon->getHPBase(); ?>" readonly></td>
+                <td><input type="number" id="HPEV" min="0" max="252" step="4" oninput="CalcHPStat()" value=0></td>
+                <td><input type="number" id="HPIV" min="0" max="31" step="1" oninput="CalcHPStat()" value="0"></td>
+                <td><span id="resultHP">0</span></td>
+            </tr>
+            <tr>
+                <td>ATK:</td>
+                <td><input type="number" id="AtkBaseStat" value="<?php echo $pokemon->getAtkBase(); ?>" readonly></td>
+                <td><input type="number" id="AtkEV" min="0" max="252" step="4" oninput="CalcAtkStat()" value=0></td>
+                <td><input type="number" id="AtkIV" min="0" max="31" step="1" oninput="CalcAtkStat()" value=0></td>
+                <td><span id="resultAtk">0</span></td>
+            </tr>
+            <tr>
+                <td>DEF:</td>
+                <td><input type="number" id="DefBaseStat" value="<?php echo $pokemon->getDefBase(); ?>" readonly></td>
+                <td><input type="number" id="DefEV" min="0" max="252" step="4" oninput="CalcDefStat()" value=0></td>
+                <td><input type="number" id="DefIV" min="0" max="31" step="1" oninput="CalcDefStat()" value=0></td>
+                <td><span id="resultDef">0</span></td>
+            </tr>
+            <tr>
+                <td>SpA:</td>
+                <td><input type="number" id="SpABaseStat" value="<?php echo $pokemon->getSpABase(); ?>" readonly></td>
+                <td><input type="number" id="SpAEV" min="0" max="252" step="4" oninput="CalcSpAStat()" value=0></td>
+                <td><input type="number" id="SpAIV" min="0" max="31" step="1" oninput="CalcSpAStat()" value=0></td>
+                <td><span id="resultSpA">0</span></td>
+            </tr>
+            <tr>
+                <td>SpD:</td>
+                <td><input type="number" id="SpDBaseStat" value="<?php echo $pokemon->getSpDBase(); ?>" readonly></td>
+                <td><input type="number" id="SpDEV" min="0" max="252" step="4" oninput="CalcSpDStat()" value=0></td>
+                <td><input type="number" id="SpDIV" min="0" max="31" step="1" oninput="CalcSpDStat()" value=0></td>
+                <td><span id="resultSpD">0</span></td>
+            </tr>
+            <tr>
+                <td>Spe:</td>
+                <td><input type="number" id="SpeBaseStat" value="<?php echo $pokemon->getSpeBase(); ?>" readonly></td>
+                <td><input type="number" id="SpeEV" min="0" max="252" step="4" oninput="CalcSpeStat()" value=0></td>
+                <td><input type="number" id="SpeIV" min="0" max="31" step="1" oninput="CalcSpeStat()" value=0></td>
+                <td><span id="resultSpe">0</span></td>
+            </tr>
+
+        </tbody>
+    </table>
+
     <button onclick="speichereZahl()">Speichern und an PHP senden</button>
-    <p>Ergebnis:
-        <span id="resultHP">0</span>
-        <span id="resultAtk">0</span>
-        <!-- Weitere Ergebnis-Elemente für die anderen Werte hier einfügen -->
-    </p>
-    <script>
-    // Definieren Sie die pokemon-Variable im globalen Bereich
-    var pokemon;
-
-    // Rufen Sie das Pokemon-Objekt mit JavaScript ab
-    fetch('pokemon_data.php')
-        .then(response => response.json())
-        .then(data => {
-            // Weisen Sie die zurückgegebenen Daten der pokemon-Variable zu
-            pokemon = data;
-
-            // Hier können Sie das Pokemon-Objekt verwenden
-            console.log(pokemon);
-            // Führen Sie Ihre weiteren Operationen mit dem Pokemon-Objekt hier aus
-        })
-        .catch(error => console.error('Error fetching Pokemon data:', error));
-
-    function calcStat(BaseStat, IV, EV, level) {
-    let stat = Math.floor((((2 * BaseStat + IV + Math.floor(EV / 4)) * level) / 100) + 5);
-    return stat;
-}
-
-    function berechne() {
-        let inputFeld = document.getElementById('HPEV');
-        let HpEvValue = parseInt(inputFeld.value);
-        let AtkinputFeld = document.getElementById('AtkEV');
-        let AtkEvValue = parseInt(AtkinputFeld.value);
-        let ATKBaseField = document.getElementById('AtkBaseStat');
-        let atkbase = parseInt(ATKBaseField.value);
-
-        // Prüfen, ob die pokemon-Variable definiert ist, bevor sie verwendet wird
-        if (pokemon) {
-            pokemon.hpEV = parseInt(HpEvValue);
-            pokemon.atkEv = parseInt(AtkEvValue);
-
-            // Hier kann das Pokemon-Objekt verwendet werden
-            console.log(pokemon);
-
-            let result = calcStat(140, 31,254,60)
-
-            document.getElementById('resultAtk').textContent = result;
-
-        }
-    }
-
-    // Event-Listener für Input-Felder hinzufügen
-    document.getElementById('HPEV').addEventListener('input', berechne);
-    document.getElementById('AtkEV').addEventListener('input', berechne);
-    // Weitere Event-Listener für die anderen Input-Felder hier hinzufügen
-</script>
+    <script src="DmgCalc.js">
+    </script>
 
 </body>
 
