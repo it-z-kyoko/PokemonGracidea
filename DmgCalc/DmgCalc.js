@@ -1,16 +1,3 @@
-// Definieren Sie die pokemon-Variable im globalen Bereich
-var pokemon;
-
-// Rufen Sie das Pokemon-Objekt mit JavaScript ab
-fetch("pokemon_data.php")
-  .then((response) => response.json())
-  .then((data) => {
-    pokemon = data;
-
-    console.log(pokemon);
-  })
-  .catch((error) => console.error("Error fetching Pokemon data:", error));
-
 function calcStat(BaseStat, IV, EV, level) {
   let stat = Math.floor(
     ((2 * BaseStat + IV + Math.floor(EV / 4)) * level) / 100 + 5
@@ -25,306 +12,283 @@ function CalcHP(BaseStat, IV, EV, level) {
   return stat;
 }
 
-function berechne() {
-  let inputFeld = document.getElementById("HPEV");
-  let HpEvValue = parseInt(inputFeld.value);
+// Funktion zum Anwenden von Berechnungen auf ein bestimmtes Attribut
+function calculateAttributeStat(
+  attribute,
+  baseFieldId,
+  ivFieldId,
+  evFieldId,
+  resultElementId,
+  level
+) {
+  const baseStat = parseInt(document.getElementById(baseFieldId).value);
+  const iv = parseInt(document.getElementById(ivFieldId).value);
+  const ev = parseInt(document.getElementById(evFieldId).value);
 
-  // Prüfen, ob die pokemon-Variable definiert ist, bevor sie verwendet wird
-  if (pokemon) {
-    pokemon.hpEV = parseInt(HpEvValue);
-    pokemon.atkEv = parseInt(AtkEvValue);
+  // Initialisieren der Variablen `result` im Funktions-Scope
+  let result;
 
-    // Hier kann das Pokemon-Objekt verwendet werden
-    console.log(pokemon);
+  if (attribute == "HP" || attribute == "HP 2") {
+    result = CalcHP(baseStat, iv, ev, level);
+  } else {
+    result = calcStat(baseStat, iv, ev, level);
+  }
 
-    let result = calcStat(140, 31, 254, 60);
+  document.getElementById(resultElementId).textContent = result;
+}
 
-    document.getElementById("resultAtk").textContent = result;
+// Funktion zum Initialisieren der Berechnungen
+function initializeCalculations() {
+  handleEmptyInputs();
+  const level = parseInt(document.getElementById("level").value);
+  const level2 = parseInt(document.getElementById("level2").value);
+
+  const attributes = [
+    {
+      name: "HP",
+      baseFieldId: "HPBaseStat",
+      ivFieldId: "HPIV",
+      evFieldId: "HPEV",
+      resultElementId: "resultHP",
+      level: level,
+    },
+    {
+      name: "Attack",
+      baseFieldId: "AtkBaseStat",
+      ivFieldId: "AtkIV",
+      evFieldId: "AtkEV",
+      resultElementId: "resultAtk",
+      level: level,
+    },
+    {
+      name: "Defense",
+      baseFieldId: "DefBaseStat",
+      ivFieldId: "DefIV",
+      evFieldId: "DefEV",
+      resultElementId: "resultDef",
+      level: level,
+    },
+    {
+      name: "Special Attack",
+      baseFieldId: "SpABaseStat",
+      ivFieldId: "SpAIV",
+      evFieldId: "SpAEV",
+      resultElementId: "resultSpA",
+      level: level,
+    },
+    {
+      name: "Special Defense",
+      baseFieldId: "SpDBaseStat",
+      ivFieldId: "SpDIV",
+      evFieldId: "SpDEV",
+      resultElementId: "resultSpD",
+      level: level,
+    },
+    {
+      name: "Speed",
+      baseFieldId: "SpeBaseStat",
+      ivFieldId: "SpeIV",
+      evFieldId: "SpeEV",
+      resultElementId: "resultSpe",
+      level: level,
+    },
+    {
+      name: "HP 2",
+      baseFieldId: "HPBaseStat2",
+      ivFieldId: "HPIV2",
+      evFieldId: "HPEV2",
+      resultElementId: "resultHP2",
+      level: level2,
+    },
+    {
+      name: "Attack 2",
+      baseFieldId: "AtkBaseStat2",
+      ivFieldId: "AtkIV2",
+      evFieldId: "AtkEV2",
+      resultElementId: "resultAtk2",
+      level: level2,
+    },
+    {
+      name: "Defense 2",
+      baseFieldId: "DefBaseStat2",
+      ivFieldId: "DefIV2",
+      evFieldId: "DefEV2",
+      resultElementId: "resultDef2",
+      level: level2,
+    },
+    {
+      name: "Special Attack 2",
+      baseFieldId: "SpABaseStat2",
+      ivFieldId: "SpAIV2",
+      evFieldId: "SpAEV2",
+      resultElementId: "resultSpA2",
+      level: level2,
+    },
+    {
+      name: "Special Defense 2",
+      baseFieldId: "SpDBaseStat2",
+      ivFieldId: "SpDIV2",
+      evFieldId: "SpDEV2",
+      resultElementId: "resultSpD2",
+      level: level2,
+    },
+    {
+      name: "Speed 2",
+      baseFieldId: "SpeBaseStat2",
+      ivFieldId: "SpeIV2",
+      evFieldId: "SpeEV2",
+      resultElementId: "resultSpe2",
+      level: level2,
+    },
+  ];
+
+  attributes.forEach((attr) => {
+    calculateAttributeStat(
+      attr.name,
+      attr.baseFieldId,
+      attr.ivFieldId,
+      attr.evFieldId,
+      attr.resultElementId,
+      attr.level
+    );
+  });
+}
+
+
+// Event-Handler für Eingabefelder
+document.addEventListener("input", function (event) {
+  const targetId = event.target.id;
+  if (
+    targetId.startsWith("level")||
+    targetId.endsWith("EV") ||
+    targetId.endsWith("IV") ||
+    targetId.endsWith("BaseStat")
+  ) {
+    initializeCalculations();
+  }
+});
+
+function handleEmptyInput(inputElement) {
+  if (!inputElement.id === "level" && inputElement.value === "") {
+    inputElement.value = "0";
+  } else if (inputElement.id === "level" && inputElement.value === "") {
+    inputElement.value = "1";
   }
 }
 
-function CalcHPStat() {
-  let HPInputEV = document.getElementById("HPEV");
-  let HPEVValue = HPInputEV.value;
 
-  let HPIVInputField = document.getElementById("HPIV");
-  let HPIVValue = parseInt(HPIVInputField.value);
-
-  let HPBaseField = document.getElementById("HPBaseStat");
-  let HPBaseValue = parseInt(HPBaseField.value);
-
-  let levelField = document.getElementById("level");
-  let level = parseInt(levelField.value);
-
-  if (pokemon) {
-    console.log(pokemon);
-    console.log("EV: " + HPEVValue);
-    console.log("IV: " + HPIVValue);
-    console.log("Level: " + level);
-    console.log("Base: " + HPBaseValue);
-
-    let result = CalcHP(HPBaseValue, HPIVValue, HPEVValue, level);
-
-    document.getElementById("resultHP").textContent = result;
-  }
+function handleEmptyInputs() {
+  const inputElements = document.querySelectorAll("input[type=number]");
+  inputElements.forEach((input) => {
+    input.addEventListener("input", function () {
+      handleEmptyInput(input);
+    });
+  });
 }
-
-function CalcAtkStat() {
-  let AtkEVInputField = document.getElementById("AtkEV");
-  let AtkEVValue = parseInt(AtkEVInputField.value);
-
-  let AtkIVInputField = document.getElementById("AtkIV");
-  let AtkIVValue = parseInt(AtkIVInputField.value);
-
-  let AtkBaseField = document.getElementById("AtkBaseStat");
-  let AtkBaseValue = parseInt(AtkBaseField.value);
-
-  let LevelField = document.getElementById("level");
-  let level = parseInt(LevelField.value);
-
-  if (pokemon) {
-    console.log(pokemon);
-    console.log("EV: " + AtkEVValue);
-    console.log("IV: " + AtkIVValue);
-    console.log("Level: " + level);
-    console.log("Base: " + AtkBaseValue);
-
-    let result = calcStat(AtkBaseValue, AtkIVValue, AtkEVValue, level);
-
-    document.getElementById("resultAtk").textContent = result;
-  }
-}
-
-function CalcDefStat() {
-  let DefEVInputField = document.getElementById("DefEV");
-  let DefEVValue = parseInt(DefEVInputField.value);
-
-  let DefIVInputField = document.getElementById("DefIV");
-  let DefIVValue = parseInt(DefIVInputField.value);
-
-  let DefBaseField = document.getElementById("DefBaseStat");
-  let DefBaseValue = parseInt(DefBaseField.value);
-
-  let LevelField = document.getElementById("level");
-  let level = parseInt(LevelField.value);
-
-  if (pokemon) {
-    console.log(pokemon);
-    console.log("EV: " + DefEVValue);
-    console.log("IV: " + DefIVValue);
-    console.log("Level: " + level);
-    console.log("Base: " + DefBaseValue);
-
-    let result = calcStat(DefBaseValue, DefIVValue, DefEVValue, level);
-
-    document.getElementById("resultDef").textContent = result;
-  }
-}
-
-function CalcSpAStat() {
-  let SpAEVInputField = document.getElementById("SpAEV");
-  let SpAEVValue = parseInt(SpAEVInputField.value);
-
-  let SpAIVInputField = document.getElementById("SpAIV");
-  let SpAIVValue = parseInt(SpAIVInputField.value);
-
-  let SpABaseField = document.getElementById("SpABaseStat");
-  let SpABaseValue = parseInt(SpABaseField.value);
-
-  let LevelField = document.getElementById("level");
-  let level = parseInt(LevelField.value);
-
-  if (pokemon) {
-    console.log(pokemon);
-    console.log("EV: " + SpAEVValue);
-    console.log("IV: " + SpAIVValue);
-    console.log("Level: " + level);
-    console.log("Base: " + SpABaseValue);
-
-    let result = calcStat(SpABaseValue, SpAIVValue, SpAEVValue, level);
-
-    document.getElementById("resultSpA").textContent = result;
-  }
-}
-
-function CalcSpDStat() {
-  let SpDEVInputField = document.getElementById("SpDEV");
-  let SpDEVValue = parseInt(SpDEVInputField.value);
-
-  let SpDIVInputField = document.getElementById("SpDIV");
-  let SpDIVValue = parseInt(SpDIVInputField.value);
-
-  let SpDBaseField = document.getElementById("SpDBaseStat");
-  let SpDBaseValue = parseInt(SpDBaseField.value);
-
-  let LevelField = document.getElementById("level");
-  let level = parseInt(LevelField.value);
-
-  if (pokemon) {
-    console.log(pokemon);
-    console.log("EV: " + SpDEVValue);
-    console.log("IV: " + SpDIVValue);
-    console.log("Level: " + level);
-    console.log("Base: " + SpDBaseValue);
-
-    let result = calcStat(SpDBaseValue, SpDIVValue, SpDEVValue, level);
-
-    document.getElementById("resultSpD").textContent = result;
-  }
-}
-
-function CalcSpeStat() {
-  let SpeEVInputField = document.getElementById("SpeEV");
-  let SpeEVValue = parseInt(SpeEVInputField.value);
-
-  let SpeIVInputField = document.getElementById("SpeIV");
-  let SpeIVValue = parseInt(SpeIVInputField.value);
-
-  let SpeBaseField = document.getElementById("SpeBaseStat");
-  let SpeBaseValue = parseInt(SpeBaseField.value);
-
-  let LevelField = document.getElementById("level");
-  let level = parseInt(LevelField.value);
-
-  if (pokemon) {
-    console.log(pokemon);
-    console.log("EV: " + SpeEVValue);
-    console.log("IV: " + SpeIVValue);
-    console.log("Level: " + level);
-    console.log("Base: " + SpeBaseValue);
-
-    let result = calcStat(SpeBaseValue, SpeIVValue, SpeEVValue, level);
-
-    document.getElementById("resultSpe").textContent = result;
-  }
-}
-
-document.getElementById("HPEV").addEventListener("input", CalcHPStat);
-document.getElementById("HPIV").addEventListener("input", CalcHPStat);
-document.getElementById("AtkEV").addEventListener("input", CalcAtkStat);
-document.getElementById("AtkIV").addEventListener("input", CalcAtkStat);
-document.getElementById("DefEV").addEventListener("input", CalcDefStat);
-document.getElementById("DefIV").addEventListener("input", CalcDefStat);
-document.getElementById("SpAEV").addEventListener("input", CalcSpAStat);
-document.getElementById("SpAIV").addEventListener("input", CalcSpAStat);
-document.getElementById("SpDEV").addEventListener("input", CalcSpDStat);
-document.getElementById("SpDIV").addEventListener("input", CalcSpDStat);
-document.getElementById("SpeEV").addEventListener("input", CalcSpeStat);
-document.getElementById("SpeIV").addEventListener("input", CalcSpeStat);
 
 function bodyload() {
-  debugger;
-  let HPInputEV = document.getElementById("HPEV");
-  let HPEVValue = HPInputEV.value;
+  updatePokemonSelection2();
+  updatePokemonSelection();
+  initializeCalculations();
+  moves();
+}
 
-  let HPIVInputField = document.getElementById("HPIV");
-  let HPIVValue = parseInt(HPIVInputField.value);
+async function updatePokemonSelection() {
+  const pokemonId = parseInt(document.getElementById("pokemonSelect").value);
 
-  let HPBaseField = document.getElementById("HPBaseStat");
-  let HPBaseValue = parseInt(HPBaseField.value);
+  try {
+    const response = await fetch(
+      `get_pokemon_details.php?pokemon_id=${pokemonId}`
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const pokemonData = await response.json();
+    console.log(pokemonData);
+    document.getElementById("HPBaseStat").value = pokemonData.HPBase;
+    document.getElementById("HPEV").value = pokemonData.hpEV;
+    document.getElementById("HPIV").value = pokemonData.hpIV;
+    document.getElementById("AtkBaseStat").value = pokemonData.AtkBase;
+    document.getElementById("AtkEV").value = pokemonData.atkEV;
+    document.getElementById("AtkIV").value = pokemonData.atkIV;
 
-  let levelField = document.getElementById("level");
-  let level = parseInt(levelField.value);
+    document.getElementById("DefBaseStat").value = pokemonData.DefBase;
+    document.getElementById("DefEV").value = pokemonData.defEV;
+    document.getElementById("DefIV").value = pokemonData.defIV;
 
-  console.log("EV: " + HPEVValue);
-  console.log("IV: " + HPIVValue);
-  console.log("Level: " + level);
-  console.log("Base: " + HPBaseValue);
+    document.getElementById("SpABaseStat").value = pokemonData.SpABase;
+    document.getElementById("SpAEV").value = pokemonData.spAtkEV;
+    document.getElementById("SpAIV").value = pokemonData.spAtkIV;
 
-  let resultHp = CalcHP(HPBaseValue, HPIVValue, HPEVValue, level);
+    document.getElementById("SpDBaseStat").value = pokemonData.SpDBase;
+    document.getElementById("SpDEV").value = pokemonData.spDefEV;
+    document.getElementById("SpDIV").value = pokemonData.spDefIV;
 
-  document.getElementById("resultHP").textContent = resultHp;
+    document.getElementById("SpeBaseStat").value = pokemonData.SpeBase;
+    document.getElementById("SpeEV").value = pokemonData.speedEV;
+    document.getElementById("SpeIV").value = pokemonData.speedIV;
+    initializeCalculations();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+  async function updatePokemonSelection2() {
+    const pokemonId = parseInt(document.getElementById("pokemonSelect2").value);
+  
+    try {
+      const response = await fetch(
+        `get_pokemon_details.php?pokemon_id=${pokemonId}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const pokemonData = await response.json();
+      console.log(pokemonData);
+      document.getElementById("HPBaseStat2").value = pokemonData.HPBase;
+      document.getElementById("HPEV2").value = pokemonData.hpEV;
+      document.getElementById("HPIV2").value = pokemonData.hpIV;
+      document.getElementById("AtkBaseStat2").value = pokemonData.AtkBase;
+      document.getElementById("AtkEV2").value = pokemonData.atkEV;
+      document.getElementById("AtkIV2").value = pokemonData.atkIV;
+  
+      document.getElementById("DefBaseStat2").value = pokemonData.DefBase;
+      document.getElementById("DefEV2").value = pokemonData.defEV;
+      document.getElementById("DefIV2").value = pokemonData.defIV;
+  
+      document.getElementById("SpABaseStat2").value = pokemonData.SpABase;
+      document.getElementById("SpAEV2").value = pokemonData.spAtkEV;
+      document.getElementById("SpAIV2").value = pokemonData.spAtkIV;
+  
+      document.getElementById("SpDBaseStat2").value = pokemonData.SpDBase;
+      document.getElementById("SpDEV2").value = pokemonData.spDefEV;
+      document.getElementById("SpDIV2").value = pokemonData.spDefIV;
+  
+      document.getElementById("SpeBaseStat2").value = pokemonData.SpeBase;
+      document.getElementById("SpeEV2").value = pokemonData.speedEV;
+      document.getElementById("SpeIV2").value = pokemonData.speedIV;
+      initializeCalculations();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+}
 
-  let AtkEVInputField = document.getElementById("AtkEV");
-  let AtkEVValue = parseInt(AtkEVInputField.value);
+async function moves() {
+  // Alle ausgewählten Move-IDs abrufen
+  const moveIds = [];
+  for (let i = 1; i <= 4; i++) {
+      const selectedMoveId = parseInt(document.getElementById('pokemon2move' + i).value);
+      moveIds.push(selectedMoveId);
+  }
 
-  let AtkIVInputField = document.getElementById("AtkIV");
-  let AtkIVValue = parseInt(AtkIVInputField.value);
+  // Alle Move-Daten abrufen
+  const responses = await Promise.all(moveIds.map(moveId => fetch(`getmovesdetails.php?id=${moveId}`)));
+  const moveDatas = await Promise.all(responses.map(response => response.json()));
 
-  let AtkBaseField = document.getElementById("AtkBaseStat");
-  let AtkBaseValue = parseInt(AtkBaseField.value);
+  // Alle Ergebnis-Elemente aktualisieren
+  for (let i = 1; i <= 4; i++) {
+      const resultElementId = 'resultmovedmg' + i;
+      document.getElementById(resultElementId).textContent = moveDatas[i - 1].Power;
+  }
 
-  console.log(pokemon);
-  console.log("EV: " + AtkEVValue);
-  console.log("IV: " + AtkIVValue);
-  console.log("Level: " + level);
-  console.log("Base: " + AtkBaseValue);
-
-  let resultATK = calcStat(AtkBaseValue, AtkIVValue, AtkEVValue, level);
-
-  document.getElementById("resultAtk").textContent = resultATK;
-
-  let DefEVInputField = document.getElementById("DefEV");
-  let DefEVValue = parseInt(DefEVInputField.value);
-
-  let DefIVInputField = document.getElementById("DefIV");
-  let DefIVValue = parseInt(DefIVInputField.value);
-
-  let DefBaseField = document.getElementById("DefBaseStat");
-  let DefBaseValue = parseInt(DefBaseField.value);
-
-  console.log("EV: " + DefEVValue);
-  console.log("IV: " + DefIVValue);
-  console.log("Level: " + level);
-  console.log("Base: " + DefBaseValue);
-
-  let resultDef = calcStat(DefBaseValue, DefIVValue, DefEVValue, level);
-
-  document.getElementById("resultDef").textContent = resultDef;
-  let SpAEVInputField = document.getElementById("SpAEV");
-  let SpAEVValue = parseInt(SpAEVInputField.value);
-
-  let SpAIVInputField = document.getElementById("SpAIV");
-  let SpAIVValue = parseInt(SpAIVInputField.value);
-
-  let SpABaseField = document.getElementById("SpABaseStat");
-  let SpABaseValue = parseInt(SpABaseField.value);
-
-  console.log(pokemon);
-  console.log("EV: " + SpAEVValue);
-  console.log("IV: " + SpAIVValue);
-  console.log("Level: " + level);
-  console.log("Base: " + SpABaseValue);
-
-  let resultSpA = calcStat(SpABaseValue, SpAIVValue, SpAEVValue, level);
-
-  document.getElementById("resultSpA").textContent = resultSpA;
-
-  let SpDEVInputField = document.getElementById("SpDEV");
-  let SpDEVValue = parseInt(SpDEVInputField.value);
-
-  let SpDIVInputField = document.getElementById("SpDIV");
-  let SpDIVValue = parseInt(SpDIVInputField.value);
-
-  let SpDBaseField = document.getElementById("SpDBaseStat");
-  let SpDBaseValue = parseInt(SpDBaseField.value);
-
-  console.log(pokemon);
-  console.log("EV: " + SpDEVValue);
-  console.log("IV: " + SpDIVValue);
-  console.log("Level: " + level);
-  console.log("Base: " + SpDBaseValue);
-
-  let resultSpD = calcStat(SpDBaseValue, SpDIVValue, SpDEVValue, level);
-
-  document.getElementById("resultSpD").textContent = resultSpD;
-
-  let SpeEVInputField = document.getElementById("SpeEV");
-  let SpeEVValue = parseInt(SpeEVInputField.value);
-
-  let SpeIVInputField = document.getElementById("SpeIV");
-  let SpeIVValue = parseInt(SpeIVInputField.value);
-
-  let SpeBaseField = document.getElementById("SpeBaseStat");
-  let SpeBaseValue = parseInt(SpeBaseField.value);
-
-    console.log(pokemon);
-    console.log("EV: " + SpeEVValue);
-    console.log("IV: " + SpeIVValue);
-    console.log("Level: " + level);
-    console.log("Base: " + SpeBaseValue);
-
-    let resultSpe = calcStat(SpeBaseValue, SpeIVValue, SpeEVValue, level);
-
-    document.getElementById("resultSpe").textContent = resultSpe;
+  console.log(moveDatas);
 }
