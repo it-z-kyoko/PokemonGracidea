@@ -154,12 +154,11 @@ function initializeCalculations() {
   });
 }
 
-
 // Event-Handler für Eingabefelder
 document.addEventListener("input", function (event) {
   const targetId = event.target.id;
   if (
-    targetId.startsWith("level")||
+    targetId.startsWith("level") ||
     targetId.endsWith("EV") ||
     targetId.endsWith("IV") ||
     targetId.endsWith("BaseStat")
@@ -175,7 +174,6 @@ function handleEmptyInput(inputElement) {
     inputElement.value = "1";
   }
 }
-
 
 function handleEmptyInputs() {
   const inputElements = document.querySelectorAll("input[type=number]");
@@ -194,8 +192,11 @@ function bodyload() {
 }
 
 async function updatePokemonSelection() {
-  debugger;
   const pokemonId = parseInt(document.getElementById("pokemonSelect").value);
+  // Das HTML-Element mit der ID "meinBild"
+  const meinBild = document.getElementById("pokemon1picture");
+
+  meinBild.src = "../sprites/Gracidea-Dex/" + pokemonId + ".png";
 
   try {
     const response = await fetch(
@@ -233,62 +234,71 @@ async function updatePokemonSelection() {
     console.error("Error fetching data:", error);
   }
 }
-  async function updatePokemonSelection2() {
-    const pokemonId = parseInt(document.getElementById("pokemonSelect2").value);
-  
-    try {
-      const response = await fetch(
-        `get_pokemon_details.php?pokemon_id=${pokemonId}`
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const pokemonData = await response.json();
-      console.log(pokemonData);
-      document.getElementById("HPBaseStat2").value = pokemonData.HPBase;
-      document.getElementById("HPEV2").value = pokemonData.hpEV;
-      document.getElementById("HPIV2").value = pokemonData.hpIV;
-      document.getElementById("AtkBaseStat2").value = pokemonData.AtkBase;
-      document.getElementById("AtkEV2").value = pokemonData.atkEV;
-      document.getElementById("AtkIV2").value = pokemonData.atkIV;
-  
-      document.getElementById("DefBaseStat2").value = pokemonData.DefBase;
-      document.getElementById("DefEV2").value = pokemonData.defEV;
-      document.getElementById("DefIV2").value = pokemonData.defIV;
-  
-      document.getElementById("SpABaseStat2").value = pokemonData.SpABase;
-      document.getElementById("SpAEV2").value = pokemonData.spAtkEV;
-      document.getElementById("SpAIV2").value = pokemonData.spAtkIV;
-  
-      document.getElementById("SpDBaseStat2").value = pokemonData.SpDBase;
-      document.getElementById("SpDEV2").value = pokemonData.spDefEV;
-      document.getElementById("SpDIV2").value = pokemonData.spDefIV;
-  
-      document.getElementById("SpeBaseStat2").value = pokemonData.SpeBase;
-      document.getElementById("SpeEV2").value = pokemonData.speedEV;
-      document.getElementById("SpeIV2").value = pokemonData.speedIV;
-      initializeCalculations();
-    } catch (error) {
-      console.error("Error fetching data:", error);
+async function updatePokemonSelection2() {
+  const pokemonId = parseInt(document.getElementById("pokemonSelect2").value);
+  const meinBild = document.getElementById("pokemon2picture");
+
+  meinBild.src = "../sprites/Gracidea-Dex/" + pokemonId + ".png";
+  try {
+    const response = await fetch(
+      `get_pokemon_details.php?pokemon_id=${pokemonId}`
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
+    const pokemonData = await response.json();
+    console.log(pokemonData);
+    document.getElementById("HPBaseStat2").value = pokemonData.HPBase;
+    document.getElementById("HPEV2").value = pokemonData.hpEV;
+    document.getElementById("HPIV2").value = pokemonData.hpIV;
+    document.getElementById("AtkBaseStat2").value = pokemonData.AtkBase;
+    document.getElementById("AtkEV2").value = pokemonData.atkEV;
+    document.getElementById("AtkIV2").value = pokemonData.atkIV;
+
+    document.getElementById("DefBaseStat2").value = pokemonData.DefBase;
+    document.getElementById("DefEV2").value = pokemonData.defEV;
+    document.getElementById("DefIV2").value = pokemonData.defIV;
+
+    document.getElementById("SpABaseStat2").value = pokemonData.SpABase;
+    document.getElementById("SpAEV2").value = pokemonData.spAtkEV;
+    document.getElementById("SpAIV2").value = pokemonData.spAtkIV;
+
+    document.getElementById("SpDBaseStat2").value = pokemonData.SpDBase;
+    document.getElementById("SpDEV2").value = pokemonData.spDefEV;
+    document.getElementById("SpDIV2").value = pokemonData.spDefIV;
+
+    document.getElementById("SpeBaseStat2").value = pokemonData.SpeBase;
+    document.getElementById("SpeEV2").value = pokemonData.speedEV;
+    document.getElementById("SpeIV2").value = pokemonData.speedIV;
+    initializeCalculations();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 }
 
 async function moves() {
   // Alle ausgewählten Move-IDs abrufen
   const moveIds = [];
   for (let i = 1; i <= 4; i++) {
-      const selectedMoveId = parseInt(document.getElementById('pokemon2move' + i).value);
-      moveIds.push(selectedMoveId);
+    const selectedMoveId = parseInt(
+      document.getElementById("pokemon2move" + i).value
+    );
+    moveIds.push(selectedMoveId);
   }
 
   // Alle Move-Daten abrufen
-  const responses = await Promise.all(moveIds.map(moveId => fetch(`getmovesdetails.php?id=${moveId}`)));
-  const moveDatas = await Promise.all(responses.map(response => response.json()));
+  const responses = await Promise.all(
+    moveIds.map((moveId) => fetch(`getmovesdetails.php?id=${moveId}`))
+  );
+  const moveDatas = await Promise.all(
+    responses.map((response) => response.json())
+  );
 
   // Alle Ergebnis-Elemente aktualisieren
   for (let i = 1; i <= 4; i++) {
-      const resultElementId = 'resultmovedmg' + i;
-      document.getElementById(resultElementId).textContent = moveDatas[i - 1].Power;
+    const resultElementId = "resultmovedmg" + i;
+    document.getElementById(resultElementId).textContent =
+      moveDatas[i - 1].Power;
   }
 
   console.log(moveDatas);

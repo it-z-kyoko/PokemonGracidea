@@ -52,7 +52,7 @@ $resultmoves = $conn->query($query);
         ?>
     </select>
     <input type="number" id="level" value="50" min="1" max="100" step="1">
-
+    <img src="../sprites/Gracidea-Dex/0.png" id="pokemon1picture">
 
     <table class="StatTable">
         <thead>
@@ -121,6 +121,7 @@ $resultmoves = $conn->query($query);
         ?>
     </select>
     <input type="number" id="level2" value="50" min="0" max="100" step="1" readonly>
+    <img src="../sprites/Gracidea-Dex/0.png" id="pokemon2picture">
     <table class="StatTable">
         <thead>
             <tr>
