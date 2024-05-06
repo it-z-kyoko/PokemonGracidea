@@ -194,6 +194,7 @@ function bodyload() {
 }
 
 async function updatePokemonSelection() {
+  debugger;
   const pokemonId = parseInt(document.getElementById("pokemonSelect").value);
 
   try {

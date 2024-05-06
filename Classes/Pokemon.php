@@ -383,7 +383,7 @@ class Pokemon
     {
         $conn = DBConnection::getConnection();
 
-        $sql = "SELECT * FROM PokedexBaseStats WHERE Nr = :Nr AND Name = :Name";
+        $sql = "SELECT * FROM PokedexBaseStats WHERE ID = :Nr AND Name = :Name";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(':Nr', $this->getNr());
@@ -560,7 +560,7 @@ class Pokemon
     {
         $conn = DBConnection::getConnection();
 
-        $sql = "SELECT * FROM PokemonTypes WHERE Nr = :Nr AND Name = :Name";
+        $sql = "SELECT * FROM PokemonTypes WHERE ID = :Nr AND Name = :Name";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(':Nr', $this->getNr());
