@@ -84,7 +84,7 @@ async function calcDmg1(moveId, min) {
   const Atk = getAtk(moveData.Category);
   const Def = getDef();
 
-  const BaseDmg = getBaseDmg();
+  const BaseDmg = getBaseDmg(movedmg);
   const Crit = getCrit(moveId);
 
   if (min) {
@@ -284,7 +284,7 @@ function checkTypes(moveType, pokemonTyp) {
 
 function getAtk(Category) {
   if (Category === "Physical") {
-    return document.getElementById("resultAtk").textContent;
+    return parseInt(document.getElementById("resultAtk").textContent);
   } else if (Category === "Special") {
     return document.getElementById("resultSpA").textContent;
   } else {
@@ -305,44 +305,119 @@ function getDef(Category) {
 function getBaseDmg(BaseDmg) {
   const cbRH = document.getElementById("RH1");
   if (cbRH.checked) {
-    const RH = 1.5
+    const RH = 1.5;
   } else {
-    const RH = 1
+    const RH = 1;
   }
-
 
   const IT = getItemFactor();
   const cbLV = document.getElementById("LV1");
   if (cbRH.checked) {
-    const LV = 1.5
+    const LV = 1.5;
   } else {
-    const LV = 1
+    const LV = 1;
   }
   const LS = checkLS();
   const NM = checkNM();
   const AF = getownAbilityFactor();
   const ZF = getenemyAbilityFactor();
-  
 
-  return RH * BaseDmg * IT * LV * LS * NM * AF * ZF
+  return RH * BaseDmg * IT * LV * LS * NM * AF * ZF;
 }
 
 function getItemFactor() {
-  return null;
+  return 1;
 }
 
 function getownAbilityFactor() {
-  return null;
+  return 1;
 }
 
 function getenemyAbilityFactor() {
-  return null;
+  return 1;
 }
 
 function checkLS() {
-  return null;
+  return 1;
 }
 
 function checkNM() {
-  return null;
+  return 1;
+}
+
+function getF1(Category, Target) {
+  const StatusOption =
+    document.getElementById("status1select").options[
+      document.getElementById("status1select").selectedIndex
+    ];
+  const StatusName = StatusOption.textContent;
+  const AbilityOption =
+    document.getElementById("ability1select").options[
+      document.getElementById("ability1select").selectedIndex
+    ];
+  const AbilityName = AbilityOption.textContent;
+
+  if (StatusName === "Burn") {
+    if (AbilityName === "Adrenaline") {
+      const BRT = 2;
+    } else {
+      const BRT = 0.5;
+    }
+  } else {
+    const BRT = 1;
+  }
+
+  if (Category === "Physical") {
+    const cbRef = document.getElementById("Ref1");
+    if (cbRef.checked) {
+      const RL = 0.5;
+    } else {
+      const RL = 1;
+    }
+  } else if (Category === "Special") {
+    const cbLi = document.getElementById("Li1");
+    if (cbLi.checked) {
+      const RL = 0.5;
+    } else {
+      const RL = 1;
+    }
+  } else {
+    const RL = 1;
+  }
+
+  if (Target !== 1) {
+    const V = 0.75;
+  }
+
+  const SR = checkSR(moveType)
+  const FF = checkFF(moveType)
+
+
+  return BRT * RL * V * SR * FF;
+}
+
+function CheckSR(moveType) {
+  const cbST = document.getElementById("ST");
+  if (cbST.checked) {
+    if (moveType === "Fire") {
+      return 1.5;
+    } else if (moveType === "Water") {
+      return 0.5;
+    } else {
+      return 1;
+    }
+  }
+
+  const cbRT = document.getElementById("RT");
+  if (cbRT.checked) {
+    if (moveType === "Water") {
+      return 1.5;
+    } else if (moveType === "Fire") {
+      return 0.5;
+    } else {
+      return 1;
+    }
+  } else {
+    return 1;
+  }
 }
