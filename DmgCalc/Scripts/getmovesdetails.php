@@ -1,6 +1,6 @@
 <?php
-include_once("../Classes/DBConnection.php");
-include_once("../Classes/Moves.php");
+include_once("../../Classes/DBConnection.php");
+include_once("../../Classes/Moves.php");
 
 header('Content-Type: application/json');
 
