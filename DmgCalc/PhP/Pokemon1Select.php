@@ -145,11 +145,18 @@
             </tr>
             <tr>
                 <td>Item:</td>
-                <td><select name="item1select" id="item1select"></td>
+                <td><select name="item1select" id="item1select">
+                        <option value="none">No Item</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Status:</td>
-                <td><select name="status1select" id="status1select"></td>
+                <td><select name="status1select" id="status1select">
+                        <option value="Healthy">Healthy</option>
+                        <option value="Burn">Burned</option>
+                    </select>
+                </td>
             </tr>
         </tbody>
     </table>

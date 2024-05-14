@@ -42,10 +42,14 @@ $resultmoves = $conn->query($query);
         </div>
         <div class="left">
             <?php include("PhP/MoveTable1.php")?>
+            <?php include("PhP/pkm1AttackStats.php")?>
         </div>
-        <div class="main">main</div>
+        <div class="main">
+        <?php include("PhP/Checkboxes.php")?>
+        </div>
         <div class="right">
         <?php include("PhP/MoveTable2.php")?>
+        
         </div>
         <div class="footer">footer</div>
     </div>
