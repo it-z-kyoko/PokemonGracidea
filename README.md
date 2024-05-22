@@ -4,6 +4,7 @@
 
 ## Pokemon Change Log
 Servine Grass/--- -> Servine Grass/Dragon
+
 Serperior Grass/--- -> Serperior Grass/Dragon
 
 Mega Absol Dark/--- -> Mega Absol Dark/Fairy
@@ -11,9 +12,11 @@ Mega Absol Dark/--- -> Mega Absol Dark/Fairy
 Croconaw Water/--- -> Croconaw Water/Steel
 
 Combusken Fire/Fighting -> Combusken Fire/Fairy
+
 Blaziken Fire/Fighting -> Blaziken Fire/Fairy
 
 Chansey Normal --> Chansey Fairy
+
 Heiteira Normal --> Heiteira Fairy
 
 ## Dmg Calc
