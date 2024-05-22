@@ -383,7 +383,7 @@ class Pokemon
     {
         $conn = DBConnection::getConnection();
 
-        $sql = "SELECT * FROM PokedexBaseStats WHERE Nr = :Nr AND Name = :Name";
+        $sql = "SELECT * FROM PokedexBaseStats WHERE ID = :Nr AND Name = :Name";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(':Nr', $this->getNr());
@@ -560,7 +560,7 @@ class Pokemon
     {
         $conn = DBConnection::getConnection();
 
-        $sql = "SELECT * FROM PokemonTypes WHERE Nr = :Nr AND Name = :Name";
+        $sql = "SELECT * FROM PokemonTypes WHERE ID = :Nr AND Name = :Name";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(':Nr', $this->getNr());
@@ -581,4 +581,46 @@ class Pokemon
     public function serialize() {
         return serialize($this);
     }
+
+    public function getDetails() {
+        return [
+            'nr' => $this->nr,
+            'name' => $this->name,
+            'typ1' => $this->typ1,
+            'typ2' => $this->typ2,
+            'ability' => $this->ability,
+            'level' => $this->level,
+            'nature' => $this->nature,
+            'teraType' => $this->teraType,
+            'move1' => $this->move1,
+            'move2' => $this->move2,
+            'move3' => $this->move3,
+            'move4' => $this->move4,
+            'hpEV' => $this->hpEV,
+            'atkEV' => $this->atkEV,
+            'defEV' => $this->defEV,
+            'spAtkEV' => $this->spAtkEV,
+            'spDefEV' => $this->spDefEV,
+            'speedEV' => $this->speedEV,
+            'hpIV' => $this->hpIV,
+            'atkIV' => $this->atkIV,
+            'defIV' => $this->defIV,
+            'spAtkIV' => $this->spAtkIV,
+            'spDefIV' => $this->spDefIV,
+            'speedIV' => $this->speedIV,
+            'hp' => $this->hp,
+            'atk' => $this->atk,
+            'def' => $this->def,
+            'spAtk' => $this->spAtk,
+            'spDef' => $this->spDef,
+            'speed' => $this->speed,
+            'HPBase' => $this->HPBase,
+            'AtkBase' => $this->AtkBase,
+            'DefBase' => $this->DefBase,
+            'SpABase' => $this->SpABase,
+            'SpDBase' => $this->SpDBase,
+            'SpeBase' => $this->SpeBase
+        ];
+    }
+    
 }

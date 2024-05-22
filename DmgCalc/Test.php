@@ -1,15 +1,17 @@
 <?php
-include_once("../Global/CalcFunctions.php");
 include_once("../Classes/Pokemon.php");
+include_once("../Classes/DBConnection.php");
 
-$pokemon = new Pokemon(173, 'Skarmory');
 
-// Konvertiere das Pokemon-Objekt in JSON
-$pokemon_json = json_encode($pokemon);
+$conn = DBConnection::getConnection();
 
-// Gib das JSON zurück
-echo $pokemon_json;
+$query = "SELECT id, name FROM pokedex";
+$resultPokemon = $conn->query($query);
+
+$query = "SELECT id, name FROM moves";
+$resultmoves = $conn->query($query);
 ?>
+
 
 
 <!DOCTYPE html>
@@ -18,6 +20,7 @@ echo $pokemon_json;
 <head>
     <meta charset="UTF-8">
     <title>Dynamische Berechnung</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,71 +32,82 @@ echo $pokemon_json;
             margin-bottom: 10px;
         }
     </style>
+    <link rel="stylesheet" href="../Css/DmgCalc.css">
+
 </head>
 
-<body>
-    <label for="HPEV">Geben Sie die Basiswerte ein:</label>
-    <input type="hidden" id="AtkBaseStat" value="<?php echo $pokemon->getAtkBase();?>">
-    <input type="number" id="HPEV" min="0" max="252" step="4" oninput="berechne()">
-    <input type="number" id="AtkEV" min="0" max="252" step="4" oninput="berechne()">
-    <!-- Weitere Input-Felder für die anderen Werte hier einfügen -->
-    <button onclick="speichereZahl()">Speichern und an PHP senden</button>
-    <p>Ergebnis:
-        <span id="resultHP">0</span>
-        <span id="resultAtk">0</span>
-        <!-- Weitere Ergebnis-Elemente für die anderen Werte hier einfügen -->
-    </p>
-    <script>
-    // Definieren Sie die pokemon-Variable im globalen Bereich
-    var pokemon;
+<body onload="bodyload()" id="body">
+    <?php include("BattleGrafic.php")?>
+    
+    
 
-    // Rufen Sie das Pokemon-Objekt mit JavaScript ab
-    fetch('pokemon_data.php')
-        .then(response => response.json())
-        .then(data => {
-            // Weisen Sie die zurückgegebenen Daten der pokemon-Variable zu
-            pokemon = data;
+    <?php include("MoveTable1.php")?>
+   
 
-            // Hier können Sie das Pokemon-Objekt verwenden
-            console.log(pokemon);
-            // Führen Sie Ihre weiteren Operationen mit dem Pokemon-Objekt hier aus
-        })
-        .catch(error => console.error('Error fetching Pokemon data:', error));
 
-    function calcStat(BaseStat, IV, EV, level) {
-    let stat = Math.floor((((2 * BaseStat + IV + Math.floor(EV / 4)) * level) / 100) + 5);
-    return stat;
-}
 
-    function berechne() {
-        let inputFeld = document.getElementById('HPEV');
-        let HpEvValue = parseInt(inputFeld.value);
-        let AtkinputFeld = document.getElementById('AtkEV');
-        let AtkEvValue = parseInt(AtkinputFeld.value);
-        let ATKBaseField = document.getElementById('AtkBaseStat');
-        let atkbase = parseInt(ATKBaseField.value);
+    <?php include("MoveTable2.php")?>
 
-        // Prüfen, ob die pokemon-Variable definiert ist, bevor sie verwendet wird
-        if (pokemon) {
-            pokemon.hpEV = parseInt(HpEvValue);
-            pokemon.atkEv = parseInt(AtkEvValue);
 
-            // Hier kann das Pokemon-Objekt verwendet werden
-            console.log(pokemon);
-
-            let result = calcStat(140, 31,254,60)
-
-            document.getElementById('resultAtk').textContent = result;
-
-        }
-    }
-
-    // Event-Listener für Input-Felder hinzufügen
-    document.getElementById('HPEV').addEventListener('input', berechne);
-    document.getElementById('AtkEV').addEventListener('input', berechne);
-    // Weitere Event-Listener für die anderen Input-Felder hier hinzufügen
-</script>
+    <script src="Scripts/DmgCalc.js">
+    </script>
+    <script src="Scripts/pkmHandling.js"></script>
+    <script src="Scripts/MoveHandler.js"></script>
 
 </body>
 
 </html>
+
+<style>
+    /* Checkbox-Button-Stil */
+    .checkbox-button {
+        display: inline-block;
+        cursor: pointer;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+
+    .checkbox-button input {
+        display: none;
+    }
+
+    .checkbox-button::before {
+        content: "";
+        /* Pseudo-Element für den Checkbox-Stil */
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        vertical-align: middle;
+        display: none;
+    }
+
+    .checkbox-button input:checked+button {
+        background-color: #333;
+        /* Ändern Sie die Hintergrundfarbe */
+        color: #fff;
+        /* Ändern Sie die Textfarbe */
+    }
+
+    /* Checkbox-Button-Stil */
+    .checkbox-button {
+        display: inline-block;
+        cursor: pointer;
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        transition: background-color 0.3s;
+        /* Übergangseffekt für die Hintergrundfarbe */
+    }
+
+    /* Ändern Sie den Button-Stil, wenn die Checkbox aktiviert ist */
+    input[type="checkbox"]:checked+.checkbox-button {
+        background-color: #333;
+        /* Ändern Sie die Hintergrundfarbe */
+        color: #fff;
+        /* Ändern Sie die Textfarbe */
+    }
+</style>

@@ -1,0 +1,301 @@
+table.StatTable {
+    width: auto;
+    border-collapse: collapse;
+    border: 1px solid #3B4CCA;
+    table-layout: auto;
+    width: fit-content;
+  }
+  table.StatTable td, table.StatTable th {
+    border: 1px solid #3B4CCA;
+    padding: 5px;
+    text-align: left;
+    white-space: nowrap;
+  }
+  table.StatTable tbody td {
+    font-size: 13px;
+    background-color: #fff;
+    color: #3B4CCA;
+    font-size: 16px;
+  }
+  table.StatTable thead {
+    background: #DDDDDD;
+  }
+  table.StatTable thead th {
+    background-color: #f5bbfd;
+    color: #3B4CCA;
+    font-size: 18px;
+  }
+  table.StatTable tfoot {
+    font-weight: bold;
+  }
+
+  body {
+    background: #f8f8f8;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+#pokemonSelect, #pokemonSelect2 {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 2px solid #3B4CCA;
+    border-radius: 5px;
+    background: #fff;
+    color: #3B4CCA;
+}
+
+optgroup {
+    font-weight: bold;
+    color: #f5bbfd;
+}
+
+option {
+    color: #333;
+}
+
+table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #3B4CCA;
+}
+
+th, td {
+    padding: 5px;
+    text-align: left;
+}
+
+th {
+    background-color: #f5bbfd;
+    color: #3B4CCA;
+    font-size: 18px;
+}
+
+td {
+    background-color: #fff;
+    color: #3B4CCA;
+    font-size: 16px;
+}
+
+table.StatTable th {
+    background-color: #f5bbfd;
+}
+
+.StatTable tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+input[type="number"], select {
+    width: 80%;
+    padding: 3px;
+    border: 1px solid #3B4CCA;
+    border-radius: 5px;
+    background: #fff;
+    color: #3B4CCA;
+}
+
+
+span {
+    font-weight: bold;
+    color: #3B4CCA;
+}
+
+#natureSelect1, #ability1select, #item1select, #status1select,#natureSelect2,#ability2select, #item2select,#status2select {
+    width: 100%;
+    padding: 5px;
+    border: 2px solid #3B4CCA;
+    border-radius: 5px;
+    background: #fff;
+    color: #3B4CCA;
+}
+
+td:first-child {
+    font-weight: bold;
+    color: #710080;
+}
+
+td span {
+    font-weight: bold;
+    color: #3B4CCA;
+}
+
+#level {
+    width: 50px;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%233B4CCA" d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>') no-repeat right 10px center;
+    background-size: 10px;
+    padding-right: 30px;
+}
+
+@media (max-width: 768px) {
+    #pokemonSelect, table, input[type="number"], select {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+
+    #level {
+        width: 40px;
+    }
+}
+
+    .BattlePicture {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+        .flex {
+        display: flex
+    }
+
+    #body {
+        display: flex;
+        margin: 0;
+        flex-direction: column;
+        align-content: center;
+        align-items: center;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        background: #f8f8f8;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+    
+    .container {
+        display: grid;
+        width: 80%;
+        height: 100%;
+        grid-template-columns: 40% 10% 10% 40%;
+        grid-template-areas: 
+            "a-A6XXM-0-1 a-A6XXM-0-1 a-A6XXM-2 a-A6XXM-2"
+            "left main main right";
+        gap: 10px;
+        justify-items: center;
+    }
+    
+    .container > div {
+        border: 1px dashed #888;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    
+    .header-1 {
+        grid-area: header-1;
+    }
+    
+    .a-A6XXM-0-1, .a-A6XXM-2 {
+        grid-area: a-A6XXM-0-1;
+        width: 80%;
+    }
+    
+    .a-A6XXM-2 {
+        grid-area: a-A6XXM-2;
+    }
+    
+    .left {
+        grid-area: left;
+        overflow: scroll;
+    }
+    
+    .main {
+        grid-area: main;
+        overflow: scroll;
+    }
+    
+    .right {
+        grid-area: right;
+        overflow: scroll;
+    }
+
+/* Checkbox-Button-Stil */
+    .checkbox-button {
+        display: inline-block;
+        cursor: pointer;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+
+    .checkbox-button input {
+        display: none;
+    }
+
+    .checkbox-button::before {
+        content: "";
+        /* Pseudo-Element für den Checkbox-Stil */
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        vertical-align: middle;
+        display: none;
+    }
+
+    .checkbox-button input:checked+button {
+        background-color: #333;
+        /* Ändern Sie die Hintergrundfarbe */
+        color: #fff;
+        /* Ändern Sie die Textfarbe */
+    }
+
+    /* Checkbox-Button-Stil */
+    .checkbox-button {
+        display: inline-block;
+        cursor: pointer;
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        transition: background-color 0.3s;
+        /* Übergangseffekt für die Hintergrundfarbe */
+    }
+
+    /* Ändern Sie den Button-Stil, wenn die Checkbox aktiviert ist */
+    input[type="checkbox"]:checked+.checkbox-button {
+        background-color: #333;
+        /* Ändern Sie die Hintergrundfarbe */
+        color: #fff;
+        /* Ändern Sie die Textfarbe */
+    }
+
+
+    #health-bar {
+        width: 100%;
+        background-color: grey;
+        border: 1px solid #000;
+        height: 30px;
+        position: relative;
+    }
+
+    #health-bar-inner {
+        height: 100%;
+        width: 100%;
+        background-color: green;
+        text-align: center;
+        color: white;
+        line-height: 30px; /* gleiche Höhe wie #health-bar */
+    }
