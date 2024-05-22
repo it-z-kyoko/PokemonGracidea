@@ -1,6 +1,7 @@
 # PokemonGracidea
 
 ## Region Description
+The Events of PokemonGracidea take place in a Region not far away from Unova. The region is still affected by something known as the "Gracidea Incident" where the Protector of the Gracidea clashed with its destroyer, leaving the region in a destroyes state. Neither to Goddess, nor the Protector or destroyer has been seen ever since.
 
 ## Pokemon Change Log
 Servine Grass/--- -> Servine Grass/Dragon
