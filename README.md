@@ -12,6 +12,8 @@ Mega Absol Dark/--- -> Mega Absol Dark/Fairy
 
 Croconaw Water/--- -> Croconaw Water/Steel
 
+Feraligator Water/--- -> Feraligator Water/Steel
+
 Combusken Fire/Fighting -> Combusken Fire/Fairy
 
 Blaziken Fire/Fighting -> Blaziken Fire/Fairy
