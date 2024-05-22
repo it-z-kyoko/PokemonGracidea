@@ -24,5 +24,10 @@
 <label class="checkbox-button" for="PM1" onclick="">Plus/Minus</label>
 
 <input type="checkbox" id="SS1" onchange="" style="display: none;">
-<label class="checkbox-button" for="PM1" onclick="">Slow Start</label>
+<label class="checkbox-button" for="SS1" onclick="">Slow Start</label>
 
+<input type="checkbox" id="PM2" onchange="" style="display: none;">
+<label class="checkbox-button" for="PM2" onclick="">Plus/Minus</label>
+
+<input type="checkbox" id="SS2" onchange="" style="display: none;">
+<label class="checkbox-button" for="SS2" onclick="">Slow Start</label>
