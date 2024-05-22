@@ -16,10 +16,7 @@
                 </select>
             </td>
             <td>
-                <span id="1resultmovedmg1" style="display: none;">0</span>
-            </td>
-            <td>
-                <input type="checkbox" id="1resultmovedmg1Crit" style="display: none;">
+                <input type="checkbox" id="1resultmovedmg1Crit" onchange="calc('pokemon1')" style="display: none;">
                 <label class="checkbox-button" for="1resultmovedmg1Crit">Critical Hit</label>
             </td>
         </tr>
@@ -38,11 +35,8 @@
                 </select>
             </td>
             <td>
-                <span id="1resultmovedmg2" style="display: none;">0</span>
-            </td>
-            <td>
-                <input type="checkbox" id="1resultmovedmg2Crit" onchange="updateCrit()" style="display: none;">
-                <label class="checkbox-button" for="1resultmovedmg2Crit" onclick="updateCrit()">Critical Hit</label>
+                <input type="checkbox" id="1resultmovedmg2Crit" onchange="calc('pokemon1')" style="display: none;">
+                <label class="checkbox-button" for="1resultmovedmg2Crit">Critical Hit</label>
             </td>
         </tr>
         <tr>
@@ -58,9 +52,6 @@
                     }
                     ?>
                 </select>
-            </td>
-            <td>
-                <span id="1resultmovedmg3" style="display: none;">0</span>
             </td>
             <td>
                 <input type="checkbox" id="1resultmovedmg3Crit" onchange="calc('pokemon1')" style="display: none;">
@@ -82,12 +73,14 @@
                 </select>
             </td>
             <td>
-                <span id="1resultmovedmg4" style="display: none;">0</span>
-            </td>
-            <td>
                 <input type="checkbox" id="1resultmovedmg4Crit" onchange="calc('pokemon1')" style="display: none;">
                 <label class="checkbox-button" for="1resultmovedmg4Crit">Critical Hit</label>
             </td>
         </tr>
     </tbody>
 </table>
+
+<span id="1resultmovedmg1" style="display: none;">0</span>
+<span id="1resultmovedmg2" style="display: none;">0</span>
+<span id="1resultmovedmg3" style="display: none;">0</span>
+<span id="1resultmovedmg4" style="display: none;">0</span>

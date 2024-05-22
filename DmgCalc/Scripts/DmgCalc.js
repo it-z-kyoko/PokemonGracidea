@@ -1,73 +1,87 @@
-// Event-Handler für Eingabefelder
+document.addEventListener("DOMContentLoaded", async function () {
+  try {
+    await updatePokemonSelection(
+      "pokemonSelect",
+      "pokemon1picture",
+      "level",
+      "HPBaseStat",
+      "HPEV",
+      "HPIV",
+      "AtkBaseStat",
+      "AtkEV",
+      "AtkIV",
+      "DefBaseStat",
+      "DefEV",
+      "DefIV",
+      "SpABaseStat",
+      "SpAEV",
+      "SpAIV",
+      "SpDBaseStat",
+      "SpDEV",
+      "SpDIV",
+      "SpeBaseStat",
+      "SpeEV",
+      "SpeIV",
+      "p1T1",
+      "p1T2",
+      "natureSelect1",
+      "ability1select"
+    );
 
-function bodyload() {
-  updatePokemonSelection(
-    "pokemonSelect",
-    "pokemon1picture",
-    "level",
-    "HPBaseStat",
-    "HPEV",
-    "HPIV",
-    "AtkBaseStat",
-    "AtkEV",
-    "AtkIV",
-    "DefBaseStat",
-    "DefEV",
-    "DefIV",
-    "SpABaseStat",
-    "SpAEV",
-    "SpAIV",
-    "SpDBaseStat",
-    "SpDEV",
-    "SpDIV",
-    "SpeBaseStat",
-    "SpeEV",
-    "SpeIV",
-    "p1T1",
-    "p1T2",
-    "natureSelect1",
-    "ability1select"
-  );
-  updatePokemonSelection(
-    "pokemonSelect2",
-    "pokemon2picture",
-    "level2",
-    "HPBaseStat2",
-    "HPEV2",
-    "HPIV2",
-    "AtkBaseStat2",
-    "AtkEV2",
-    "AtkIV2",
-    "DefBaseStat2",
-    "DefEV2",
-    "DefIV2",
-    "SpABaseStat2",
-    "SpAEV2",
-    "SpAIV2",
-    "SpDBaseStat2",
-    "SpDEV2",
-    "SpDIV2",
-    "SpeBaseStat2",
-    "SpeEV2",
-    "SpeIV2",
-    "p2T1",
-    "p2T2",
-    "natureSelect2",
-    "ability2select"
-  );
-  initializeCalculations();
-  moves();
-  initMoveCalc();
-}
+    await updatePokemonSelection(
+      "pokemonSelect2",
+      "pokemon2picture",
+      "level2",
+      "HPBaseStat2",
+      "HPEV2",
+      "HPIV2",
+      "AtkBaseStat2",
+      "AtkEV2",
+      "AtkIV2",
+      "DefBaseStat2",
+      "DefEV2",
+      "DefIV2",
+      "SpABaseStat2",
+      "SpAEV2",
+      "SpAIV2",
+      "SpDBaseStat2",
+      "SpDEV2",
+      "SpDIV2",
+      "SpeBaseStat2",
+      "SpeEV2",
+      "SpeIV2",
+      "p2T1",
+      "p2T2",
+      "natureSelect2",
+      "ability2select"
+    );
+
+    await setCheckboxAndTriggerChange("CurrHP1");
+    await setCheckboxAndTriggerChange("CurrHP2");
+
+    initializeCalculations();
+    moves();
+
+    await initMoveCalc1();
+    await initMoveCalc2();
+
+    fillAttacks(1);
+    fillAttacks(2);
+
+    
+    
+
+  } catch (error) {
+    console.error("Error:", error);
+  }
+});
+
 
 function calc(pokemon) {
   const triggeredElementId = event.target.id;
-  console.log(triggeredElementId);
   const moveid = triggeredElementId.slice(0, -4); // Verwenden Sie 'const' hier
-  console.log(moveid);
 
   const lastChar = moveid.slice(-1);
-  console.log("Last Character of Move ID:", lastChar);
 
   const selectElementID = pokemon + "move" + lastChar;
 
@@ -80,7 +94,6 @@ function calc(pokemon) {
 
   const selectedMoveId = parseInt(selectElement.value);
 
-  console.log(selectedMoveId);
   if (selectedMoveId != null && moveid != "") {
     if (pokemon === "pokemon1") {
       fillResult(selectedMoveId, moveid, "1");
@@ -94,13 +107,37 @@ async function fillResult(selectedMoveId, moveid, target) {
   let resultarray = [];
   for (let i = 85; i < 101; i++) {
     let calc = await calcDmg(selectedMoveId, moveid, target, i);
-    if (!resultarray.includes(calc)) {
+    console.log(calc);
+    if (calc !== null && !resultarray.includes(calc)) {
       resultarray.push(calc);
     }
   }
+
   console.log(resultarray);
-  document.getElementById(moveid+"dmgrolls").innerHTML = resultarray.join(', ');
+  document.getElementById(moveid + "dmgrolls").innerHTML = resultarray.join(", ");
+
+  // Berechnung des Prozentbereichs
+  const maxHP = getMaxHP(target);
+  if (resultarray.length > 0 && maxHP > 0) {
+    const minPercent = ((resultarray[0] / maxHP) * 100).toFixed(1);
+    const maxPercent = ((resultarray[resultarray.length - 1] / maxHP) * 100).toFixed(1);
+    const percentRange = `${minPercent}% - ${maxPercent}%`;
+
+    document.getElementById(moveid + "percentage").innerHTML = percentRange;
+  } else {
+    document.getElementById(moveid + "percentage").innerHTML = "N/A";
+  }
 }
+
+
+
+function getMaxHP(target) {
+  const maxHPElementId = `CurrHP${target}`;
+  const maxHP = parseInt(document.getElementById(maxHPElementId).value, 10);
+  return maxHP;
+}
+
+
 
 async function calcDmg(moveId, triggered, target, Z) {
   let levelid, pType1, pType2, Defid, SpDefid;
@@ -128,16 +165,30 @@ async function calcDmg(moveId, triggered, target, Z) {
       throw new Error("Network response was not ok");
     }
     moveData = await response.json();
-    console.log(moveData);
+
+    // Ensure moveData is valid and contains the necessary properties
+    if (!moveData || typeof moveData !== 'object' || !moveData.Power || !moveData.Type || !moveData.Category) {
+      throw new Error("Invalid move data received");
+    }
   } catch (error) {
     console.error("Error fetching data:", error);
+    return null; // Return null or handle the error as needed
   }
 
   const movedmg = moveData.Power;
   const typeatk = moveData.Type;
-  const level = document.getElementById(levelid).value;
-  const p2t1 = document.getElementById(pType1).textContent;
-  const p2t2 = document.getElementById(pType2).textContent;
+  const levelElem = document.getElementById(levelid);
+  const pType1Elem = document.getElementById(pType1);
+  const pType2Elem = document.getElementById(pType2);
+
+  if (!levelElem || !pType1Elem || !pType2Elem) {
+    console.error("Required element(s) not found.");
+    return null;
+  }
+
+  const level = parseInt(levelElem.value, 10);
+  const p2t1 = pType1Elem.textContent;
+  const p2t2 = pType2Elem.textContent;
 
   const Atk = getAtk(moveData.Category, target);
   const Def = getDef(moveData.Category, target);
@@ -145,25 +196,39 @@ async function calcDmg(moveId, triggered, target, Z) {
   const BaseDmg = getBaseDmg(movedmg);
   const Crit = getCrit(triggered);
 
-  const F1 = getF1(moveData.Category, parseInt(moveData.Target), moveData.Type);
+  const F1 = getF1(moveData.Category, parseInt(moveData.Target, 10), moveData.Type);
   const F2 = getF2();
   const STAB = checkStab(typeatk, p2t1, p2t2);
   const Type1 = checkTypes(typeatk, p2t1);
   const Type2 = checkTypes(typeatk, p2t2);
   const F3 = getF3();
 
-  const Dmg =
-    ((level * (2 / 5) + 2) * BaseDmg * (Atk / (50 * Def)) * F1 + 2) *
-    Crit *
-    F2 *
-    (Z / 100) *
-    STAB *
-    Type1 *
-    Type2 *
-    F3;
-  console.log(Math.floor(Dmg));
+  const Dmg = ((level * (2 / 5) + 2) * BaseDmg * (Atk / (50 * Def)) * F1 + 2) *
+    Crit * F2 * (Z / 100) * STAB * Type1 * Type2 * F3;
+
+  if (isNaN(Dmg)) {
+    console.error("Dmg calculation resulted in NaN. Variables:");
+    console.log({
+      level,
+      movedmg,
+      typeatk,
+      Atk,
+      Def,
+      BaseDmg,
+      Crit,
+      F1,
+      F2,
+      STAB,
+      Type1,
+      Type2,
+      F3,
+      Z
+    });
+  }
+
   return Math.floor(Dmg);
 }
+
 
 function checkStab(moveType, Type1, Type2) {
   Type1 = Type1.toLowerCase();
@@ -326,17 +391,126 @@ function checkTypes(moveType, pokemonTyp) {
   }
 }
 
-function getAtk(Category, target) {
+function getAtk(Category, target, ability) {
+  function getBoostedAtk(atk, StatusOption) {
+    switch (StatusOption.textContent) {
+      case "-6":
+        return Math.floor(atk * (ability === "Simple" ? 0.25 : 0.25));
+      case "-5":
+        return Math.floor(atk * (ability === "Simple" ? 0.25 : (2 / 7)));
+      case "-4":
+        return Math.floor(atk * (ability === "Simple" ? 0.25 : (1 / 3)));
+      case "-3":
+        return Math.floor(atk * (ability === "Simple" ? 0.25 : 0.4));
+      case "-2":
+        return Math.floor(atk * (ability === "Simple" ? (1 / 3) : 0.5));
+      case "-1":
+        return Math.floor(atk * (ability === "Simple" ? 0.5 : (2 / 3)));
+      case "0":
+        return Math.floor(atk * 1);
+      case "+1":
+        return Math.floor(atk * (ability === "Simple" ? 2 : 1.5));
+      case "+2":
+        return Math.floor(atk * (ability === "Simple" ? 3 : 2));
+      case "+3":
+        return Math.floor(atk * (ability === "Simple" ? 4 : 2.5));
+      case "+4":
+        return Math.floor(atk * (ability === "Simple" ? 4 : 3));
+      case "+5":
+        return Math.floor(atk * (ability === "Simple" ? 4 : 3.5));
+      case "+6":
+        return Math.floor(atk * (ability === "Simple" ? 4 : 4));
+      default:
+        return atk;
+    }
+  }
+
+  function getFF(ability, target) {
+    let FF = 1; // Default value
+  
+    const status = document.getElementById(target === "1" ? "status1select" : "status2select").value;
+    const isNotHealthyOrAsleep = status !== "healthy" && status !== "asleep";
+  
+    const CurrHP = parseInt(document.getElementById(target === "1" ? "CurrHP1" : "CurrHP2").value, 10);
+    const MaxHP = parseInt(document.getElementById(target === "1" ? "CurrHP1" : "CurrHP2").max, 10);
+  
+    const PMCheckbox = document.getElementById(target === "1" ? "PM1" : "PM2").checked;
+    const SSCheckbox = document.getElementById(target === "1" ? "SS1" : "SS2").checked;
+    const STCheckbox = document.getElementById("ST").checked;
+  
+    switch (ability) {
+      case "Guts":
+        if (isNotHealthyOrAsleep) {
+          FF = 1.5;
+        }
+        break;
+      case "Toxic Boost":
+        if (status === "poisoned") {
+          FF = 1.5;
+        }
+        break;
+      case "Flare Boost":
+        if (status === "burned") {
+          FF = 1.5;
+        }
+        break;
+      case "Huge Power":
+      case "Pure Power":
+        FF = 2;
+        break;
+      case "Minus":
+      case "Plus":
+        if (PMCheckbox) {
+          FF = 1.5;
+        }
+        break;
+      case "Flower Gift":
+        if (STCheckbox) {
+          FF = 1.5;
+        }
+        break;
+      case "Slow Start":
+        if (SSCheckbox) {
+          FF = 0.5;
+        }
+        break;
+      case "Defeatist":
+        if (CurrHP < MaxHP / 2) {
+          FF = 0.5;
+        }
+        break;
+      case "Solar Power":
+        if (STCheckbox) {
+          FF = 1.5;
+        }
+        break;
+      case "Hustle":
+        FF = 1.5;
+        break;
+      default:
+        FF = 1;
+    }
+  
+    return FF;
+  }
+  
+
   if (Category === "Physical") {
-    return parseInt(
-      document.getElementById(target === "1" ? "resultAtk2" : "resultAtk")
-        .textContent
+    let atk = parseInt(
+      document.getElementById(target === "1" ? "resultAtk" : "resultAtk2").textContent
     );
+    const StatusOption = document.getElementById(target === "1" ? "Atkboost1" : "Atkboost2").options[
+      document.getElementById(target === "1" ? "Atkboost1" : "Atkboost2").selectedIndex
+    ];
+    return getBoostedAtk(atk, StatusOption) * getFF(ability, target);
   } else if (Category === "Special") {
-    return parseInt(
-      document.getElementById(target === "1" ? "resultSpA2" : "resultSpA")
-        .textContent
+    let atk = parseInt(
+      document.getElementById(target === "1" ? "resultSpA" : "resultSpA2").textContent
     );
+    const StatusOption = document.getElementById(target === "1" ? "SpAboost1" : "SpAboost2").options[
+      document.getElementById(target === "1" ? "SpAboost1" : "SpAboost2").selectedIndex
+    ];
+    return getBoostedAtk(atk, StatusOption);
   } else {
     return 0;
   }
@@ -398,12 +572,12 @@ function checkNM() {
 function getF1(Category, Target, moveType) {
   const StatusOption =
     document.getElementById("status1select").options[
-      document.getElementById("status1select").selectedIndex
+    document.getElementById("status1select").selectedIndex
     ];
   const StatusName = StatusOption.textContent;
   const AbilityOption =
     document.getElementById("ability1select").options[
-      document.getElementById("ability1select").selectedIndex
+    document.getElementById("ability1select").selectedIndex
     ];
   const AbilityName = AbilityOption.textContent;
 
@@ -512,21 +686,76 @@ function checkBerry(itemp2) {
   return itemp2 === "y";
 }
 
-function initMoveCalc() {
-  setCheckboxAndTriggerChange("1resultmovedmg1Crit");
-  setCheckboxAndTriggerChange("1resultmovedmg2Crit");
-  setCheckboxAndTriggerChange("1resultmovedmg3Crit");
-  setCheckboxAndTriggerChange("1resultmovedmg4Crit");
+async function initMoveCalc1() {
+  await setCheckboxAndTriggerChange("1resultmovedmg1Crit");
+  await setCheckboxAndTriggerChange("1resultmovedmg2Crit");
+  await setCheckboxAndTriggerChange("1resultmovedmg3Crit");
+  await setCheckboxAndTriggerChange("1resultmovedmg4Crit");
+}
+
+async function initMoveCalc2() {
+  await setCheckboxAndTriggerChange("2resultmovedmg1Crit");
+  await setCheckboxAndTriggerChange("2resultmovedmg2Crit");
+  await setCheckboxAndTriggerChange("2resultmovedmg3Crit");
+  await setCheckboxAndTriggerChange("2resultmovedmg4Crit");
 }
 
 function setCheckboxAndTriggerChange(checkboxId) {
-  const checkbox = document.getElementById(checkboxId);
-  if (checkbox) {
-    checkbox.checked = true;
-    // Create and dispatch the event
-    const event = new Event('change');
-    checkbox.dispatchEvent(event);
-  } else {
-    console.error(`Checkbox with ID ${checkboxId} not found.`);
+  return new Promise((resolve, reject) => {
+    const checkbox = document.getElementById(checkboxId);
+    if (checkbox) {
+      const event = new Event('change');
+      checkbox.dispatchEvent(event);
+      resolve();
+    } else {
+      console.error(`Checkbox with ID ${checkboxId} not found.`);
+      reject(`Checkbox with ID ${checkboxId} not found.`);
+    }
+  });
+}
+
+
+function fillAttacks(nr) {
+  for (let i = 1; i <= 4; i++) {
+    const moveSelect = document.getElementById(`pokemon${nr}move${i}`);
+    const resultSpan = document.getElementById(`${nr}resultmovedmg${i}name`);
+
+    if (moveSelect && resultSpan) {
+      const moveOption = moveSelect.options[moveSelect.selectedIndex];
+      const abilityName = moveOption.textContent;
+      resultSpan.textContent = abilityName;
+    }
   }
 }
+
+function healthupdate() {
+  let maxHP;
+  let nr;
+  const triggeredElementId = event.target.id;
+
+  const currHP = document.getElementById(triggeredElementId).value;
+  if (triggeredElementId === "CurrHP1") {
+    maxHP = document.getElementById("resultHP").textContent;
+    nr = 1;
+  } else if (triggeredElementId === "CurrHP2") {
+    maxHP = document.getElementById("resultHP2").textContent;
+    nr = 2;
+  }
+  updateHealthBar(maxHP, currHP, nr);
+}
+
+function updateHealthBar(maxHealth, currentHealth, nr) {
+  const healthBarInner = document.getElementById(nr + "health-bar-inner");
+  const healthPercentage = (currentHealth / maxHealth) * 100;
+  healthBarInner.style.width = healthPercentage + "%";
+  healthBarInner.textContent = currentHealth + " / " + maxHealth;
+
+  if (currentHealth > 50) {
+    healthBarInner.style.backgroundColor = "green";
+  } else if (currentHealth > 20) {
+    healthBarInner.style.backgroundColor = "yellow";
+  } else {
+    healthBarInner.style.backgroundColor = "red";
+  }
+}
+

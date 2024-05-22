@@ -43,7 +43,7 @@ async function updatePokemonSelection(
       throw new Error("Network response was not ok");
     }
     const pokemonData = await response.json();
-    console.log(pokemonData);
+
     document.getElementById(levelId).value = pokemonData.level;
     document.getElementById(HPBaseStatId).value = pokemonData.HPBase;
     document.getElementById(HPEVId).value = pokemonData.hpEV;
@@ -69,7 +69,7 @@ async function updatePokemonSelection(
     updateNature("natureSelect1");
     setNature(natureid, pokemonData.nature);
     updateNature("natureSelect2");
-    setAbility(pokemonSelectId,abilityid);
+    setAbility(pokemonSelectId, abilityid);
 
     document.getElementById(p1T1Id).textContent = pokemonData.typ1;
     document.getElementById(p1T2Id).textContent = pokemonData.typ2;
@@ -79,11 +79,12 @@ async function updatePokemonSelection(
   }
 }
 
-async function setAbility(pokemonSelectId,abilityid) {
+async function setAbility(pokemonSelectId, abilityid) {
   const pokemonId = parseInt(document.getElementById(pokemonSelectId).value);
-  const selectedOption = document.getElementById(pokemonSelectId).options[
-    document.getElementById(pokemonSelectId).selectedIndex
-  ];
+  const selectedOption =
+    document.getElementById(pokemonSelectId).options[
+      document.getElementById(pokemonSelectId).selectedIndex
+    ];
   const selectedName = selectedOption.textContent;
 
   try {
@@ -95,13 +96,13 @@ async function setAbility(pokemonSelectId,abilityid) {
     }
     const pokemonAbilities = await response.json();
     const selectElement = document.getElementById(abilityid);
-    
+
     if (!selectElement) {
       console.error("Ability select element not found");
       return;
     }
     // Entfernen Sie vorhandene Optionen
-    selectElement.innerHTML = '';
+    selectElement.innerHTML = "";
     // Iteriere über die Fähigkeiten und füge sie dem Select-Element hinzu
     for (const key in pokemonAbilities) {
       if (Object.hasOwnProperty.call(pokemonAbilities, key)) {
@@ -116,8 +117,6 @@ async function setAbility(pokemonSelectId,abilityid) {
   }
 }
 
-
-
 function calcStat(BaseStat, IV, EV, level) {
   let stat = Math.floor(
     ((2 * BaseStat + IV + Math.floor(EV / 4)) * level) / 100 + 5
@@ -125,10 +124,13 @@ function calcStat(BaseStat, IV, EV, level) {
   return stat;
 }
 
-function CalcHP(BaseStat, IV, EV, level) {
+function CalcHP(BaseStat, IV, EV, level, CurrHP) {
   let stat = Math.floor(
     ((2 * BaseStat + IV + Math.floor(EV / 4)) * level) / 100 + level + 10
   );
+  document.getElementById(CurrHP).max = stat;
+  document.getElementById(CurrHP).value = stat;
+  setCheckboxAndTriggerChange(CurrHP);
   return stat;
 }
 
@@ -139,7 +141,8 @@ function calculateAttributeStat(
   evFieldId,
   resultElementId,
   level,
-  nature
+  nature,
+  CurrHP
 ) {
   const baseStat = parseInt(document.getElementById(baseFieldId).value);
   const iv = parseInt(document.getElementById(ivFieldId).value);
@@ -149,7 +152,7 @@ function calculateAttributeStat(
 
   // Berechne den Wert ohne Berücksichtigung der Natur
   if (attribute === "HP" || attribute === "HP 2") {
-    result = CalcHP(baseStat, iv, ev, level);
+    result = CalcHP(baseStat, iv, ev, level, CurrHP);
   } else {
     result = calcStat(baseStat, iv, ev, level, nature);
   }
@@ -399,6 +402,7 @@ function initializeCalculations() {
       resultElementId: "resultHP",
       level: level,
       nature: nature1,
+      CurrHP: "CurrHP1",
     },
     {
       name: "Attack",
@@ -453,6 +457,7 @@ function initializeCalculations() {
       resultElementId: "resultHP2",
       level: level2,
       nature: nature2,
+      CurrHP: "CurrHP2",
     },
     {
       name: "Attack 2",
@@ -509,7 +514,8 @@ function initializeCalculations() {
       attr.evFieldId,
       attr.resultElementId,
       attr.level,
-      attr.nature
+      attr.nature,
+      attr.CurrHP
     );
   });
 }
@@ -534,8 +540,8 @@ function setNature(selectId, selectedNature) {
   }
 }
 
-function updatePokemon() {
-  updatePokemonSelection(
+async function updatePokemon() {
+  await updatePokemonSelection(
     "pokemonSelect",
     "pokemon1picture",
     "level",
@@ -560,9 +566,10 @@ function updatePokemon() {
     "p1T1",
     "p1T2",
     "natureSelect1",
-    "ability2select"
+    "ability1select"
   );
-  updatePokemonSelection(
+  await setCheckboxAndTriggerChange("CurrHP1");
+  await updatePokemonSelection(
     "pokemonSelect2",
     "pokemon2picture",
     "level2",
@@ -587,8 +594,10 @@ function updatePokemon() {
     "p2T1",
     "p2T2",
     "natureSelect2",
-    "ability1select"
+    "ability2select"
   );
+  await setCheckboxAndTriggerChange("CurrHP2");
+
 }
 
 function handleEmptyInput(inputElement) {

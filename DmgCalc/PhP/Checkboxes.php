@@ -1,6 +1,6 @@
 
 <input type="checkbox" id="RH1" onchange="" style="display: none;">
-<label class="checkbox-button" for="RH1" onclick="">Rechte Hand</label>
+<label class="checkbox-button" for="RH1" onclick="">Helping Hand</label>
 
 <input type="checkbox" id="LV1" onchange="" style="display: none;">
 <label class="checkbox-button" for="LV1" onclick="">Ladevorgang</label>
@@ -19,3 +19,10 @@
 
 <input type="checkbox" id="FF1" onchange="" style="display: none;">
 <label class="checkbox-button" for="FF1" onclick="">Flash Fire</label>
+
+<input type="checkbox" id="PM1" onchange="" style="display: none;">
+<label class="checkbox-button" for="PM1" onclick="">Plus/Minus</label>
+
+<input type="checkbox" id="SS1" onchange="" style="display: none;">
+<label class="checkbox-button" for="PM1" onclick="">Slow Start</label>
+

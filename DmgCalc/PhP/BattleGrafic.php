@@ -25,5 +25,6 @@
 
     .BattleImg {
         width: 500px;
+        height: 300px;
     }
 </style>

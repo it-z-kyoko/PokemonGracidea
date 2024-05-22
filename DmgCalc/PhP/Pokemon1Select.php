@@ -49,6 +49,16 @@
                 <td>Level:</td>
                 <td><input type="number" id="level" value="50" min="1" max="100" step="1"></td>
             </tr>
+            <tr>
+                <td>Current HP:</td>
+                <td><input type="number" name="CurrHP1" id="CurrHP1" min="1" max="1" step="1" onchange="healthupdate()"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div id="1health-bar-inner" style="color:white;"></div>
+                </td>
+            </tr>
         </tbody>
     </table>
     <table class="StatTable">
@@ -58,6 +68,8 @@
                 <th>Base:</th>
                 <th>EVs:</th>
                 <th>IVs:</th>
+                <th>Stat:</th>
+                <th>Boost:</th>
             </tr>
         </thead>
         <tbody>
@@ -74,34 +86,119 @@
                 <td><input type="number" id="AtkEV" min="0" max="252" step="4" oninput="initializeCalculations()" value=0></td>
                 <td><input type="number" id="AtkIV" min="0" max="31" step="1" oninput="initializeCalculations()" value=0></td>
                 <td><span id="resultAtk">0</span></td>
+                <td>
+                    <select name="Atkboost1" id="Atkboost1" style="background: none; width: 40px;padding:0px;text-align:center" onchange="initMoveCalc1();">
+                        <option value="0">0</option>
+                        <option value="+1">+1</option>
+                        <option value="+2">+2</option>
+                        <option value="+3">+3</option>
+                        <option value="+4">+4</option>
+                        <option value="+5">+5</option>
+                        <option value="+6">+6</option>
+                        <option value="-1">-1</option>
+                        <option value="-2">-2</option>
+                        <option value="-3">-3</option>
+                        <option value="-4">-4</option>
+                        <option value="-5">-5</option>
+                        <option value="-6">-6</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>DEF:</td>
                 <td><input type="number" id="DefBaseStat" readonly></td>
-                <td><input type="number" id="DefEV" min="0" max="252" step="4" oninput="initializeCalculations()" value=0></td>
-                <td><input type="number" id="DefIV" min="0" max="31" step="1" oninput="initializeCalculations()" value=0></td>
+                <td><input type="number" id="DefEV" min="0" max="252" step="4" oninput="initializeCalculations()" value="0"></td>
+                <td><input type="number" id="DefIV" min="0" max="31" step="1" oninput="initializeCalculations()" value="0"></td>
                 <td><span id="resultDef">0</span></td>
+                <td>
+                    <select name="Defboost1" id="Defboost1" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc1();">
+                        <option value="0">0</option>
+                        <option value="+1">+1</option>
+                        <option value="+2">+2</option>
+                        <option value="+3">+3</option>
+                        <option value="+4">+4</option>
+                        <option value="+5">+5</option>
+                        <option value="+6">+6</option>
+                        <option value="-1">-1</option>
+                        <option value="-2">-2</option>
+                        <option value="-3">-3</option>
+                        <option value="-4">-4</option>
+                        <option value="-5">-5</option>
+                        <option value="-6">-6</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>SpA:</td>
                 <td><input type="number" id="SpABaseStat" readonly></td>
-                <td><input type="number" id="SpAEV" min="0" max="252" step="4" oninput="initializeCalculations()" value=0></td>
-                <td><input type="number" id="SpAIV" min="0" max="31" step="1" oninput="initializeCalculations()" value=0></td>
+                <td><input type="number" id="SpAEV" min="0" max="252" step="4" oninput="initializeCalculations()" value="0"></td>
+                <td><input type="number" id="SpAIV" min="0" max="31" step="1" oninput="initializeCalculations()" value="0"></td>
                 <td><span id="resultSpA">0</span></td>
+                <td>
+                    <select name="SpAboost1" id="SpAboost1" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc1();">
+                        <option value="0">0</option>
+                        <option value="+1">+1</option>
+                        <option value="+2">+2</option>
+                        <option value="+3">+3</option>
+                        <option value="+4">+4</option>
+                        <option value="+5">+5</option>
+                        <option value="+6">+6</option>
+                        <option value="-1">-1</option>
+                        <option value="-2">-2</option>
+                        <option value="-3">-3</option>
+                        <option value="-4">-4</option>
+                        <option value="-5">-5</option>
+                        <option value="-6">-6</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>SpD:</td>
                 <td><input type="number" id="SpDBaseStat" readonly></td>
-                <td><input type="number" id="SpDEV" min="0" max="252" step="4" oninput="initializeCalculations()" value=0></td>
-                <td><input type="number" id="SpDIV" min="0" max="31" step="1" oninput="initializeCalculations()" value=0></td>
+                <td><input type="number" id="SpDEV" min="0" max="252" step="4" oninput="initializeCalculations()" value="0"></td>
+                <td><input type="number" id="SpDIV" min="0" max="31" step="1" oninput="initializeCalculations()" value="0"></td>
                 <td><span id="resultSpD">0</span></td>
+                <td>
+                    <select name="SpDboost1" id="SpDboost1" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc1();">
+                        <option value="0">0</option>
+                        <option value="+1">+1</option>
+                        <option value="+2">+2</option>
+                        <option value="+3">+3</option>
+                        <option value="+4">+4</option>
+                        <option value="+5">+5</option>
+                        <option value="+6">+6</option>
+                        <option value="-1">-1</option>
+                        <option value="-2">-2</option>
+                        <option value="-3">-3</option>
+                        <option value="-4">-4</option>
+                        <option value="-5">-5</option>
+                        <option value="-6">-6</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Spe:</td>
                 <td><input type="number" id="SpeBaseStat" readonly></td>
-                <td><input type="number" id="SpeEV" min="0" max="252" step="4" oninput="initializeCalculations()" value=0></td>
-                <td><input type="number" id="SpeIV" min="0" max="31" step="1" oninput="initializeCalculations()" value=0></td>
+                <td><input type="number" id="SpeEV" min="0" max="252" step="4" oninput="initializeCalculations()" value="0"></td>
+                <td><input type="number" id="SpeIV" min="0" max="31" step="1" oninput="initializeCalculations()" value="0"></td>
                 <td><span id="resultSpe">0</span></td>
+                <td>
+                    <select name="Speboost1" id="Speboost1" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc1();">
+                        <option value="0">0</option>
+                        <option value="+1">+1</option>
+                        <option value="+2">+2</option>
+                        <option value="+3">+3</option>
+                        <option value="+4">+4</option>
+                        <option value="+5">+5</option>
+                        <option value="+6">+6</option>
+                        <option value="-1">-1</option>
+                        <option value="-2">-2</option>
+                        <option value="-3">-3</option>
+                        <option value="-4">-4</option>
+                        <option value="-5">-5</option>
+                        <option value="-6">-6</option>
+                    </select>
+                </td>
             </tr>
         </tbody>
     </table>
