@@ -79,7 +79,7 @@
         </tr>
     </tbody>
 </table>
-<span id="2resultmovedmg2">0</span>
-<span id="2resultmovedmg1">0</span>
-<span id="2resultmovedmg3">0</span>
-<span id="2resultmovedmg4">0</span>
+<span id="2resultmovedmg2" style="display: none">0</span>
+<span id="2resultmovedmg1" style="display: none">0</span>
+<span id="2resultmovedmg3" style="display: none">0</span>
+<span id="2resultmovedmg4" style="display: none">0</span>

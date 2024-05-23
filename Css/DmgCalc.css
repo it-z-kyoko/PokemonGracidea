@@ -299,3 +299,37 @@ select {
         color: white;
         line-height: 30px; /* gleiche Höhe wie #health-bar */
     }
+
+    .table1 {
+        max-width: 300px; /* Ändere die Breite nach Bedarf */
+    }
+    
+    .table2 {
+        max-width: 300px; /* Ändere die Breite nach Bedarf */
+    }
+    
+    .table1 table,
+    .table2 table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .table1 td,
+    .table2 td {
+        padding: 5px;
+        border: 1px solid #ddd;
+    }
+    
+    .checkbox-button {
+        cursor: pointer;
+        padding: 10px;
+        display: block;
+        text-align: center;
+        color: #3B4CCA;
+        font-weight: 400;
+    }
+    
+    .checkbox-button:hover {
+        background-color: #f0f0f0;
+    }
+    

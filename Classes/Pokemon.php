@@ -619,7 +619,11 @@ class Pokemon
             'DefBase' => $this->DefBase,
             'SpABase' => $this->SpABase,
             'SpDBase' => $this->SpDBase,
-            'SpeBase' => $this->SpeBase
+            'SpeBase' => $this->SpeBase,
+            'Move1' => $this->move1,
+            'Move2' => $this->move2,
+            'Move3' => $this->move3,
+            'Move4' => $this->move4
         ];
     }
     

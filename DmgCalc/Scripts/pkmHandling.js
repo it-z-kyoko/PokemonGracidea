@@ -63,6 +63,14 @@ async function updatePokemonSelection(
     document.getElementById(SpeBaseStatId).value = pokemonData.SpeBase;
     document.getElementById(SpeEVId).value = pokemonData.speedEV;
     document.getElementById(SpeIVId).value = pokemonData.speedIV;
+    const movearray = [pokemonData.Move1, pokemonData.Move2, pokemonData.Move3, pokemonData.Move4];
+    var prefix = levelId.includes('2') ? '2' : '1';
+    movearray.forEach(move => {
+      if (move != null) {
+        selectOptionByName(move,prefix, movearray.indexOf(move)+1);
+      }
+    });
+
     if (pokemonData.nature === null) {
       pokemonData.nature = "Hardy";
     }
@@ -73,7 +81,7 @@ async function updatePokemonSelection(
 
     document.getElementById(p1T1Id).textContent = pokemonData.typ1;
     document.getElementById(p1T2Id).textContent = pokemonData.typ2;
-    initializeCalculations();
+
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -117,6 +125,7 @@ async function setAbility(pokemonSelectId, abilityid) {
   }
 }
 
+
 function calcStat(BaseStat, IV, EV, level) {
   let stat = Math.floor(
     ((2 * BaseStat + IV + Math.floor(EV / 4)) * level) / 100 + 5
@@ -149,12 +158,11 @@ function calculateAttributeStat(
   const ev = parseInt(document.getElementById(evFieldId).value);
 
   let result;
-
   // Berechne den Wert ohne Berücksichtigung der Natur
   if (attribute === "HP" || attribute === "HP 2") {
-    result = CalcHP(baseStat, iv, ev, level, CurrHP);
+    result = CalcHP(baseStat, ev, iv, level, CurrHP);
   } else {
-    result = calcStat(baseStat, iv, ev, level, nature);
+    result = calcStat(baseStat, ev, iv, level, nature);
   }
 
   // Berücksichtige die Natur, falls angegeben
@@ -505,7 +513,6 @@ function initializeCalculations() {
       nature: nature2,
     },
   ];
-
   attributes.forEach((attr) => {
     calculateAttributeStat(
       attr.name,
@@ -525,7 +532,6 @@ function updateNature(selectId) {
 
   // Setze das Wesen entsprechend
   setNature(selectId, selectedNature);
-  initializeCalculations();
 }
 
 function setNature(selectId, selectedNature) {
@@ -540,64 +546,74 @@ function setNature(selectId, selectedNature) {
   }
 }
 
-async function updatePokemon() {
-  await updatePokemonSelection(
-    "pokemonSelect",
-    "pokemon1picture",
-    "level",
-    "HPBaseStat",
-    "HPEV",
-    "HPIV",
-    "AtkBaseStat",
-    "AtkEV",
-    "AtkIV",
-    "DefBaseStat",
-    "DefEV",
-    "DefIV",
-    "SpABaseStat",
-    "SpAEV",
-    "SpAIV",
-    "SpDBaseStat",
-    "SpDEV",
-    "SpDIV",
-    "SpeBaseStat",
-    "SpeEV",
-    "SpeIV",
-    "p1T1",
-    "p1T2",
-    "natureSelect1",
-    "ability1select"
-  );
-  await setCheckboxAndTriggerChange("CurrHP1");
-  await updatePokemonSelection(
-    "pokemonSelect2",
-    "pokemon2picture",
-    "level2",
-    "HPBaseStat2",
-    "HPEV2",
-    "HPIV2",
-    "AtkBaseStat2",
-    "AtkEV2",
-    "AtkIV2",
-    "DefBaseStat2",
-    "DefEV2",
-    "DefIV2",
-    "SpABaseStat2",
-    "SpAEV2",
-    "SpAIV2",
-    "SpDBaseStat2",
-    "SpDEV2",
-    "SpDIV2",
-    "SpeBaseStat2",
-    "SpeEV2",
-    "SpeIV2",
-    "p2T1",
-    "p2T2",
-    "natureSelect2",
-    "ability2select"
-  );
-  await setCheckboxAndTriggerChange("CurrHP2");
 
+async function updatePokemon() {
+  const triggeredElementId = event.target.id;
+  
+  if (triggeredElementId === "pokemonSelect") {
+    await updatePokemonSelection(
+      "pokemonSelect",
+      "pokemon1picture",
+      "level",
+      "HPBaseStat",
+      "HPEV",
+      "HPIV",
+      "AtkBaseStat",
+      "AtkEV",
+      "AtkIV",
+      "DefBaseStat",
+      "DefEV",
+      "DefIV",
+      "SpABaseStat",
+      "SpAEV",
+      "SpAIV",
+      "SpDBaseStat",
+      "SpDEV",
+      "SpDIV",
+      "SpeBaseStat",
+      "SpeEV",
+      "SpeIV",
+      "p1T1",
+      "p1T2",
+      "natureSelect1",
+      "ability1select"
+    );
+    
+  } else {
+    await updatePokemonSelection(
+      "pokemonSelect2",
+      "pokemon2picture",
+      "level2",
+      "HPBaseStat2",
+      "HPEV2",
+      "HPIV2",
+      "AtkBaseStat2",
+      "AtkEV2",
+      "AtkIV2",
+      "DefBaseStat2",
+      "DefEV2",
+      "DefIV2",
+      "SpABaseStat2",
+      "SpAEV2",
+      "SpAIV2",
+      "SpDBaseStat2",
+      "SpDEV2",
+      "SpDIV2",
+      "SpeBaseStat2",
+      "SpeEV2",
+      "SpeIV2",
+      "p2T1",
+      "p2T2",
+      "natureSelect2",
+      "ability2select"
+    );
+    
+  }
+  await initMoveCalc1();
+  await initMoveCalc2();
+  initializeCalculations();
+  await setCheckboxAndTriggerChange("CurrHP1");
+  await setCheckboxAndTriggerChange("CurrHP2");
 }
 
 function handleEmptyInput(inputElement) {

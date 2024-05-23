@@ -55,21 +55,18 @@ document.addEventListener("DOMContentLoaded", async function () {
       "natureSelect2",
       "ability2select"
     );
-
     await setCheckboxAndTriggerChange("CurrHP1");
     await setCheckboxAndTriggerChange("CurrHP2");
-
     initializeCalculations();
     moves();
-
     await initMoveCalc1();
     await initMoveCalc2();
 
     fillAttacks(1);
     fillAttacks(2);
 
-    
-    
+
+
 
   } catch (error) {
     console.error("Error:", error);
@@ -105,15 +102,14 @@ function calc(pokemon) {
 
 async function fillResult(selectedMoveId, moveid, target) {
   let resultarray = [];
+  const moveData = await getMoveData(selectedMoveId);
   for (let i = 85; i < 101; i++) {
-    let calc = await calcDmg(selectedMoveId, moveid, target, i);
-    console.log(calc);
+    let calc = await calcDmg(moveid, target, i, moveData);
     if (calc !== null && !resultarray.includes(calc)) {
       resultarray.push(calc);
     }
   }
 
-  console.log(resultarray);
   document.getElementById(moveid + "dmgrolls").innerHTML = resultarray.join(", ");
 
   // Berechnung des Prozentbereichs
@@ -139,94 +135,80 @@ function getMaxHP(target) {
 
 
 
-async function calcDmg(moveId, triggered, target, Z) {
+async function calcDmg(triggered, target, Z, moveData) {
   let levelid, pType1, pType2, Defid, SpDefid;
-
-  if (target === "1") {
-    levelid = "level";
-    pType1 = "p2T1";
-    pType2 = "p2T2";
-    Defid = "resultDef2";
-    SpDefid = "resultSpDef2";
-  } else if (target === "2") {
-    levelid = "level2";
-    pType1 = "p1T1";
-    pType2 = "p1T2";
-    Defid = "resultDef";
-    SpDefid = "resultSpDef";
-  } else {
-    throw new Error("Invalid target");
-  }
-
-  let moveData;
-  try {
-    const response = await fetch(`Scripts/getmovesdetails.php?id=${moveId}`);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+  if (moveData != null) {
+    if (target === "1") {
+      levelid = "level";
+      pType1 = "p2T1";
+      pType2 = "p2T2";
+      Defid = "resultDef2";
+      SpDefid = "resultSpDef2";
+    } else if (target === "2") {
+      levelid = "level2";
+      pType1 = "p1T1";
+      pType2 = "p1T2";
+      Defid = "resultDef";
+      SpDefid = "resultSpDef";
+    } else {
+      throw new Error("Invalid target");
     }
-    moveData = await response.json();
+    const movedmg = moveData.Power;
+    const typeatk = moveData.Type;
+    const levelElem = document.getElementById(levelid);
+    const pType1Elem = document.getElementById(pType1);
+    const pType2Elem = document.getElementById(pType2);
 
-    // Ensure moveData is valid and contains the necessary properties
-    if (!moveData || typeof moveData !== 'object' || !moveData.Power || !moveData.Type || !moveData.Category) {
-      throw new Error("Invalid move data received");
+    if (!levelElem || !pType1Elem || !pType2Elem) {
+      console.error("Required element(s) not found.");
+      return null;
     }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return null; // Return null or handle the error as needed
+
+    const level = parseInt(levelElem.value, 10);
+    const p2t1 = pType1Elem.textContent;
+    const p2t2 = pType2Elem.textContent;
+
+    const Atk = getAtk(moveData.Category, target);
+    const Def = getDef(moveData.Category, target);
+
+    const BaseDmg = getBaseDmg(movedmg);
+    const Crit = getCrit(triggered);
+
+    const F1 = getF1(moveData.Category, parseInt(moveData.Target, 10), moveData.Type);
+    const F2 = getF2();
+    const STAB = checkStab(typeatk, p2t1, p2t2);
+    const Type1 = checkTypes(typeatk, p2t1);
+    const Type2 = checkTypes(typeatk, p2t2);
+    const F3 = getF3();
+
+    const Dmg = ((level * (2 / 5) + 2) * BaseDmg * (Atk / (50 * Def)) * F1 + 2) *
+      Crit * F2 * (Z / 100) * STAB * Type1 * Type2 * F3;
+
+    if (isNaN(Dmg)) {
+      console.error("Dmg calculation resulted in NaN. Variables:");
+      console.log({
+        level,
+        movedmg,
+        typeatk,
+        Atk,
+        Def,
+        BaseDmg,
+        Crit,
+        F1,
+        F2,
+        STAB,
+        Type1,
+        Type2,
+        F3,
+        Z
+      });
+    }
+
+    return Math.floor(Dmg);
   }
-
-  const movedmg = moveData.Power;
-  const typeatk = moveData.Type;
-  const levelElem = document.getElementById(levelid);
-  const pType1Elem = document.getElementById(pType1);
-  const pType2Elem = document.getElementById(pType2);
-
-  if (!levelElem || !pType1Elem || !pType2Elem) {
-    console.error("Required element(s) not found.");
-    return null;
+  else {
+    return 0;
   }
-
-  const level = parseInt(levelElem.value, 10);
-  const p2t1 = pType1Elem.textContent;
-  const p2t2 = pType2Elem.textContent;
-
-  const Atk = getAtk(moveData.Category, target);
-  const Def = getDef(moveData.Category, target);
-
-  const BaseDmg = getBaseDmg(movedmg);
-  const Crit = getCrit(triggered);
-
-  const F1 = getF1(moveData.Category, parseInt(moveData.Target, 10), moveData.Type);
-  const F2 = getF2();
-  const STAB = checkStab(typeatk, p2t1, p2t2);
-  const Type1 = checkTypes(typeatk, p2t1);
-  const Type2 = checkTypes(typeatk, p2t2);
-  const F3 = getF3();
-
-  const Dmg = ((level * (2 / 5) + 2) * BaseDmg * (Atk / (50 * Def)) * F1 + 2) *
-    Crit * F2 * (Z / 100) * STAB * Type1 * Type2 * F3;
-
-  if (isNaN(Dmg)) {
-    console.error("Dmg calculation resulted in NaN. Variables:");
-    console.log({
-      level,
-      movedmg,
-      typeatk,
-      Atk,
-      Def,
-      BaseDmg,
-      Crit,
-      F1,
-      F2,
-      STAB,
-      Type1,
-      Type2,
-      F3,
-      Z
-    });
-  }
-
-  return Math.floor(Dmg);
 }
 
 
@@ -254,7 +236,6 @@ function getCrit(moveid) {
 }
 
 function checkTypes(moveType, pokemonTyp) {
-  //Done
   moveType = moveType.toLowerCase();
   pokemonTyp = pokemonTyp.toLowerCase();
   const effektivitaeten = {
@@ -427,17 +408,17 @@ function getAtk(Category, target, ability) {
 
   function getFF(ability, target) {
     let FF = 1; // Default value
-  
+
     const status = document.getElementById(target === "1" ? "status1select" : "status2select").value;
     const isNotHealthyOrAsleep = status !== "healthy" && status !== "asleep";
-  
+
     const CurrHP = parseInt(document.getElementById(target === "1" ? "CurrHP1" : "CurrHP2").value, 10);
     const MaxHP = parseInt(document.getElementById(target === "1" ? "CurrHP1" : "CurrHP2").max, 10);
-  
+
     const PMCheckbox = document.getElementById(target === "1" ? "PM1" : "PM2").checked;
     const SSCheckbox = document.getElementById(target === "1" ? "SS1" : "SS2").checked;
     const STCheckbox = document.getElementById("ST").checked;
-  
+
     switch (ability) {
       case "Guts":
         if (isNotHealthyOrAsleep) {
@@ -445,12 +426,12 @@ function getAtk(Category, target, ability) {
         }
         break;
       case "Toxic Boost":
-        if (status === "poisoned") {
+        if (status === "Poisoned") {
           FF = 1.5;
         }
         break;
       case "Flare Boost":
-        if (status === "burned") {
+        if (status === "Burned") {
           FF = 1.5;
         }
         break;
@@ -490,10 +471,10 @@ function getAtk(Category, target, ability) {
       default:
         FF = 1;
     }
-  
+
     return FF;
   }
-  
+
 
   if (Category === "Physical") {
     let atk = parseInt(
@@ -532,76 +513,82 @@ function getDef(Category, target) {
   }
 }
 
-function getBaseDmg(BaseDmg) {
-  const cbRH = document.getElementById("RH1"); // Rechte Hand
+function getBaseDmg(BaseDmg, target) {
+  const cbRH = document.getElementById(target === "1" ? "RH1" : "RH2"); // Rechte Hand
   const RH = cbRH.checked ? 1.5 : 1;
 
-  const IT = getItemFactor(); // ItemFactor
+  const IT = getItemFactor(target); // ItemFactor
 
-  const cbLV = document.getElementById("LV1"); // Ladevorgang
+  const cbLV = document.getElementById(target === "1" ? "LV1" : "LV2"); // Ladevorgang
   const LV = cbLV.checked ? 1.5 : 1;
 
-  const LS = checkLS(); // Lehmsuhler
-  const NM = checkNM(); // Nassmacher
-  const AF = getownAbilityFactor(); // Anwender Fähigkeit
-  const ZF = getenemyAbilityFactor(); // Ziel Fähigkeit
+  const LS = checkLS(target); // Lehmsuhler
+  const NM = checkNM(target); // Nassmacher
+  const AF = getownAbilityFactor(target); // Anwender Fähigkeit
+  const ZF = getenemyAbilityFactor(target); // Ziel Fähigkeit
 
   return RH * BaseDmg * IT * LV * LS * NM * AF * ZF;
 }
 
-function getItemFactor() {
+
+function getItemFactor(target) {
   return 1;
 }
 
-function getownAbilityFactor() {
+function getownAbilityFactor(target) {
   return 1;
 }
 
-function getenemyAbilityFactor() {
+function getenemyAbilityFactor(target) {
   return 1;
 }
 
-function checkLS() {
+function checkLS(target) {
   return 1;
 }
 
-function checkNM() {
+function checkNM(target) {
   return 1;
 }
 
 function getF1(Category, Target, moveType) {
-  const StatusOption =
-    document.getElementById("status1select").options[
-    document.getElementById("status1select").selectedIndex
-    ];
+  const statusSelectId = Target === "1" ? "status1select" : "status2select";
+  const abilitySelectId = Target === "1" ? "ability1select" : "ability2select";
+  const refCheckboxId = Target === "1" ? "Ref1" : "Ref2";
+  const liCheckboxId = Target === "1" ? "Li1" : "Li2";
+
+  const StatusOption = document.getElementById(statusSelectId).options[
+    document.getElementById(statusSelectId).selectedIndex
+  ];
   const StatusName = StatusOption.textContent;
-  const AbilityOption =
-    document.getElementById("ability1select").options[
-    document.getElementById("ability1select").selectedIndex
-    ];
+
+  const AbilityOption = document.getElementById(abilitySelectId).options[
+    document.getElementById(abilitySelectId).selectedIndex
+  ];
   const AbilityName = AbilityOption.textContent;
 
   let BRT = 1;
-  if (StatusName === "Burn") {
+  if (StatusName === "Burned") {
     BRT = AbilityName === "Adrenaline" ? 2 : 0.5;
   }
 
   let RL = 1;
   if (Category === "Physical") {
-    const cbRef = document.getElementById("Ref1");
+    const cbRef = document.getElementById(refCheckboxId);
     RL = cbRef.checked ? 0.5 : 1;
   } else if (Category === "Special") {
-    const cbLi = document.getElementById("Li1");
+    const cbLi = document.getElementById(liCheckboxId);
     RL = cbLi.checked ? 0.5 : 1;
   }
 
-  const V = Target !== 1 ? 0.75 : 1;
+  const V = Target !== "1" ? 0.75 : 1;
 
   const SR = CheckSR(moveType);
-  const FF = checkFF(moveType);
+  const FF = checkFF(moveType, Target);
 
   return BRT * RL * V * SR * FF;
 }
+
 
 function CheckSR(moveType) {
   const cbST = document.getElementById("ST");
@@ -629,8 +616,9 @@ function CheckSR(moveType) {
   }
 }
 
-function checkFF(moveType) {
-  const cbFF = document.getElementById("FF1");
+function checkFF(moveType, Target) {
+  const ffCheckboxId = Target === "1" ? "FF1" : "FF2";
+  const cbFF = document.getElementById(ffCheckboxId);
   return cbFF.checked && moveType === "Fire" ? 1.5 : 1;
 }
 
@@ -759,3 +747,31 @@ function updateHealthBar(maxHealth, currentHealth, nr) {
   }
 }
 
+async function getMoveData(moveid) {
+  let moveData;
+  try {
+    const url = `Scripts/getmovesdetails.php?id=${moveid}`;
+    console.log(`Fetching data from URL: ${url}`);
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    moveData = await response.json();
+
+    console.log(moveData);
+    if (moveData.Category === "Status") {
+      return null;
+    }
+    else {
+      if (!moveData || typeof moveData !== 'object' || !moveData.Power || !moveData.Type || !moveData.Category) {
+        throw new Error("Invalid move data received");
+      }
+      return moveData;
+    }
+
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return null;
+  }
+}

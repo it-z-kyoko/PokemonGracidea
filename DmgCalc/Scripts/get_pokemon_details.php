@@ -42,6 +42,7 @@ $pokemon->setSpDefIV($row["SPDEFIV"]);
 $pokemon->setSpeedEV($row["SPEEDEV"]);
 $pokemon->setSpeedIV($row["SPEEDIV"]);
 $pokemon->setNature($row["Nature"]);
+$pokemon->setAllMoves($row["Move1"],$row["Move2"],$row["Move3"],$row["Move4"]);
 $pokemon->NatureAffect();
 
 // Stellen Sie sicher, dass die Klasse Pokemon eine Methode hat, die das Objekt korrekt zu einem Array oder Objekt für JSON konvertiert.
