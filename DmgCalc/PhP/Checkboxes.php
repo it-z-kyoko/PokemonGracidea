@@ -1,33 +1,24 @@
-
-<input type="checkbox" id="RH1" onchange="" style="display: none;">
-<label class="checkbox-button" for="RH1" onclick="">Helping Hand</label>
-
-<input type="checkbox" id="LV1" onchange="" style="display: none;">
-<label class="checkbox-button" for="LV1" onclick="">Ladevorgang</label>
-
-<input type="checkbox" id="Ref1" onchange="" style="display: none;">
-<label class="checkbox-button" for="Ref1" onclick="">Reflect</label>
-
-<input type="checkbox" id="Li1" onchange="" style="display: none;">
-<label class="checkbox-button" for="Li1" onclick="">Light Screen</label>
-
-<input type="checkbox" id="ST" onchange="" style="display: none;">
-<label class="checkbox-button" for="ST" onclick="">Sunny Day</label>
-
-<input type="checkbox" id="RT" onchange="" style="display: none;">
-<label class="checkbox-button" for="RT" onclick="">Rain Dance</label>
-
-<input type="checkbox" id="FF1" onchange="" style="display: none;">
-<label class="checkbox-button" for="FF1" onclick="">Flash Fire</label>
-
-<input type="checkbox" id="PM1" onchange="" style="display: none;">
-<label class="checkbox-button" for="PM1" onclick="">Plus/Minus</label>
-
-<input type="checkbox" id="SS1" onchange="" style="display: none;">
-<label class="checkbox-button" for="SS1" onclick="">Slow Start</label>
-
-<input type="checkbox" id="PM2" onchange="" style="display: none;">
-<label class="checkbox-button" for="PM2" onclick="">Plus/Minus</label>
-
-<input type="checkbox" id="SS2" onchange="" style="display: none;">
-<label class="checkbox-button" for="SS2" onclick="">Slow Start</label>
+<table>
+    <tbody>
+        <tr>
+            <td>
+                <input type="checkbox" id="RT" onchange="" style="display: none;">
+                <label class="checkbox-button" for="RT" onclick="">Rain Dance</label>
+            </td>
+            <td>
+                <input type="checkbox" id="ST" onchange="" style="display: none;">
+                <label class="checkbox-button" for="ST" onclick="">Sunny Day</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox" id="SS" onchange="" style="display: none;">
+                <label class="checkbox-button" for="SS" onclick="">Sand Storm</label>
+            </td>
+            <td>
+                <input type="checkbox" id="SW" onchange="" style="display: none;">
+                <label class="checkbox-button" for="SW" onclick="">Snow Warning</label>
+            </td>
+        </tr>
+    </tbody>
+</table>

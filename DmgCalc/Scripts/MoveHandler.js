@@ -27,3 +27,14 @@ async function updateMoveResults(prefix) {
     await updateMoveResults("2");
   }
   
+  function selectOptionByName(name, prefix, move) {
+    // debugger;
+    var options = document.getElementById("pokemon" + prefix + "move" + move).options;
+    for (var i = 0; i < options.length; i++) {
+        if (options[i].text === name) {
+            options[i].selected = true;
+            break;
+        }
+      }
+      setCheckboxAndTriggerChange(prefix + "resultmovedmg" + move + "Crit");
+}

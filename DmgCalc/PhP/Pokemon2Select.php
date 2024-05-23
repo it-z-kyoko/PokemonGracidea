@@ -1,4 +1,43 @@
-<div>
+<div style="display: grid; align-items:center; justify-items: center;">
+<table class="table2">
+    <tbody>
+        <tr>
+            <td>
+                <input type="checkbox" id="RH2" onchange="" style="display: none;">
+                <label class="checkbox-button" for="RH2" onclick="">Helping Hand</label>
+            </td>
+            <td>
+                <input type="checkbox" id="LV2" onchange="" style="display: none;">
+                <label class="checkbox-button" for="LV2" onclick="">Ladevorgang</label>
+            </td>
+            <td>
+                <input type="checkbox" id="Ref2" onchange="" style="display: none;">
+                <label class="checkbox-button" for="Ref2" onclick="">Reflect</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox" id="Li2" onchange="" style="display: none;">
+                <label class="checkbox-button" for="Li2" onclick="">Light Screen</label>
+            </td>
+            <td>
+                <input type="checkbox" id="FF2" onchange="" style="display: none;">
+                <label class="checkbox-button" for="FF2" onclick="">Flash Fire</label>
+            </td>
+            <td>
+                <input type="checkbox" id="PM2" onchange="" style="display: none;">
+                <label class="checkbox-button" for="PM2" onclick="">Plus/Minus</label>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input type="checkbox" id="SS2" onchange="" style="display: none;">
+                <label class="checkbox-button" for="SS2" onclick="">Slow Start</label>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
     <div>
         <select id="pokemonSelect2" onchange="updatePokemon()">
             <?php
@@ -79,15 +118,15 @@
             <tr>
                 <td>HP:</td>
                 <td><input type="number" id="HPBaseStat2" readonly></td>
-                <td><input type="number" id="HPEV2" min="0" max="252" step="4" oninput="initializeCalculations()" value=0></td>
-                <td><input type="number" id="HPIV2" min="0" max="31" step="1" oninput="initializeCalculations()" value="0"></td>
+                <td><input type="number" id="HPEV2" min="0" max="252" step="4"  value=0></td>
+                <td><input type="number" id="HPIV2" min="0" max="31" step="1"  value="0"></td>
                 <td><span id="resultHP2">0</span></td>
             </tr>
             <tr>
                 <td>ATK:</td>
                 <td><input type="number" id="AtkBaseStat2" readonly></td>
-                <td><input type="number" id="AtkEV2" min="0" max="252" step="4" oninput="initializeCalculations()" value=0></td>
-                <td><input type="number" id="AtkIV2" min="0" max="31" step="1" oninput="initializeCalculations()" value=0></td>
+                <td><input type="number" id="AtkEV2" min="0" max="252" step="4"  value=0></td>
+                <td><input type="number" id="AtkIV2" min="0" max="31" step="1"  value=0></td>
                 <td><span id="resultAtk2">0</span></td>
                 <td>
                     <select name="Atkboost2" id="Atkboost2" style="background: none; width: 40px;padding:0px;text-align:center" onchange="initMoveCalc2();">
@@ -110,8 +149,8 @@
             <tr>
                 <td>DEF:</td>
                 <td><input type="number" id="DefBaseStat2" readonly></td>
-                <td><input type="number" id="DefEV2" min="0" max="252" step="4" oninput="initializeCalculations()" value=0></td>
-                <td><input type="number" id="DefIV2" min="0" max="31" step="1" oninput="initializeCalculations()" value=0></td>
+                <td><input type="number" id="DefEV2" min="0" max="252" step="4"  value=0></td>
+                <td><input type="number" id="DefIV2" min="0" max="31" step="1"  value=0></td>
                 <td><span id="resultDef2">0</span></td>
                 <td>
                     <select name="Defboost2" id="Defboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc2();">
@@ -134,8 +173,8 @@
             <tr>
                 <td>SpA:</td>
                 <td><input type="number" id="SpABaseStat2" readonly></td>
-                <td><input type="number" id="SpAEV2" min="0" max="252" step="4" oninput="initializeCalculations()" value=0></td>
-                <td><input type="number" id="SpAIV2" min="0" max="31" step="1" oninput="initializeCalculations()" value=0></td>
+                <td><input type="number" id="SpAEV2" min="0" max="252" step="4"  value=0></td>
+                <td><input type="number" id="SpAIV2" min="0" max="31" step="1"  value=0></td>
                 <td><span id="resultSpA2">0</span></td>
                 <td>
                     <select name="SpAboost2" id="SpAboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc2();">
@@ -158,8 +197,8 @@
             <tr>
                 <td>SpD:</td>
                 <td><input type="number" id="SpDBaseStat2" readonly></td>
-                <td><input type="number" id="SpDEV2" min="0" max="252" step="4" oninput="initializeCalculations()" value=0></td>
-                <td><input type="number" id="SpDIV2" min="0" max="31" step="1" oninput="initializeCalculations()" value=0></td>
+                <td><input type="number" id="SpDEV2" min="0" max="252" step="4"  value=0></td>
+                <td><input type="number" id="SpDIV2" min="0" max="31" step="1"  value=0></td>
                 <td><span id="resultSpD2">0</span></td>
                 <td>
                     <select name="SpDboost2" id="SpDboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc2();">
@@ -182,8 +221,8 @@
             <tr>
                 <td>Spe:</td>
                 <td><input type="number" id="SpeBaseStat2" readonly></td>
-                <td><input type="number" id="SpeEV2" min="0" max="252" step="4" oninput="initializeCalculations()" value=0></td>
-                <td><input type="number" id="SpeIV2" min="0" max="31" step="1" oninput="initializeCalculations()" value=0></td>
+                <td><input type="number" id="SpeEV2" min="0" max="252" step="4"  value=0></td>
+                <td><input type="number" id="SpeIV2" min="0" max="31" step="1"  value=0></td>
                 <td><span id="resultSpe2">0</span></td>
                 <td>
                     <select name="Speboost2" id="Speboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc2();">
