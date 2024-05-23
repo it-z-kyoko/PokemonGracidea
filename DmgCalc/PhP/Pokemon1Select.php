@@ -278,18 +278,18 @@
             </tr>
             <tr>
                 <td>Ability:</td>
-                <td><select name="ability1select" id="ability1select"></select></td>
+                <td><select name="ability1select" id="ability1select" onchange="initMoveCalc1();"></select></td>
             </tr>
             <tr>
                 <td>Item:</td>
-                <td><select name="item1select" id="item1select">
+                <td><select name="item1select" id="item1select" onchange="initMoveCalc1();">
                         <option value="none">No Item</option>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Status:</td>
-                <td><select name="status1select" id="status1select">
+                <td><select name="status1select" id="status1select" onchange="initMoveCalc1();">
                         <option value="Healthy">Healthy</option>
                         <option value="Burn">Burned</option>
                     </select>

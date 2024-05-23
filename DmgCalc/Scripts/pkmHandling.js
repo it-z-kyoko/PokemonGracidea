@@ -578,7 +578,7 @@ async function updatePokemon() {
       "natureSelect1",
       "ability1select"
     );
-    await setCheckboxAndTriggerChange("CurrHP1");
+    
   } else {
     await updatePokemonSelection(
       "pokemonSelect2",
@@ -607,11 +607,13 @@ async function updatePokemon() {
       "natureSelect2",
       "ability2select"
     );
-    await setCheckboxAndTriggerChange("CurrHP2");
+    
   }
   await initMoveCalc1();
   await initMoveCalc2();
   initializeCalculations();
+  await setCheckboxAndTriggerChange("CurrHP1");
+  await setCheckboxAndTriggerChange("CurrHP2");
 }
 
 function handleEmptyInput(inputElement) {

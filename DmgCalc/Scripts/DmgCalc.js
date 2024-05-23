@@ -426,12 +426,12 @@ function getAtk(Category, target, ability) {
         }
         break;
       case "Toxic Boost":
-        if (status === "poisoned") {
+        if (status === "Poisoned") {
           FF = 1.5;
         }
         break;
       case "Flare Boost":
-        if (status === "burned") {
+        if (status === "Burned") {
           FF = 1.5;
         }
         break;
@@ -513,76 +513,82 @@ function getDef(Category, target) {
   }
 }
 
-function getBaseDmg(BaseDmg) {
-  const cbRH = document.getElementById("RH1"); // Rechte Hand
+function getBaseDmg(BaseDmg, target) {
+  const cbRH = document.getElementById(target === "1" ? "RH1" : "RH2"); // Rechte Hand
   const RH = cbRH.checked ? 1.5 : 1;
 
-  const IT = getItemFactor(); // ItemFactor
+  const IT = getItemFactor(target); // ItemFactor
 
-  const cbLV = document.getElementById("LV1"); // Ladevorgang
+  const cbLV = document.getElementById(target === "1" ? "LV1" : "LV2"); // Ladevorgang
   const LV = cbLV.checked ? 1.5 : 1;
 
-  const LS = checkLS(); // Lehmsuhler
-  const NM = checkNM(); // Nassmacher
-  const AF = getownAbilityFactor(); // Anwender Fähigkeit
-  const ZF = getenemyAbilityFactor(); // Ziel Fähigkeit
+  const LS = checkLS(target); // Lehmsuhler
+  const NM = checkNM(target); // Nassmacher
+  const AF = getownAbilityFactor(target); // Anwender Fähigkeit
+  const ZF = getenemyAbilityFactor(target); // Ziel Fähigkeit
 
   return RH * BaseDmg * IT * LV * LS * NM * AF * ZF;
 }
 
-function getItemFactor() {
+
+function getItemFactor(target) {
   return 1;
 }
 
-function getownAbilityFactor() {
+function getownAbilityFactor(target) {
   return 1;
 }
 
-function getenemyAbilityFactor() {
+function getenemyAbilityFactor(target) {
   return 1;
 }
 
-function checkLS() {
+function checkLS(target) {
   return 1;
 }
 
-function checkNM() {
+function checkNM(target) {
   return 1;
 }
 
 function getF1(Category, Target, moveType) {
-  const StatusOption =
-    document.getElementById("status1select").options[
-    document.getElementById("status1select").selectedIndex
-    ];
+  const statusSelectId = Target === "1" ? "status1select" : "status2select";
+  const abilitySelectId = Target === "1" ? "ability1select" : "ability2select";
+  const refCheckboxId = Target === "1" ? "Ref1" : "Ref2";
+  const liCheckboxId = Target === "1" ? "Li1" : "Li2";
+
+  const StatusOption = document.getElementById(statusSelectId).options[
+    document.getElementById(statusSelectId).selectedIndex
+  ];
   const StatusName = StatusOption.textContent;
-  const AbilityOption =
-    document.getElementById("ability1select").options[
-    document.getElementById("ability1select").selectedIndex
-    ];
+
+  const AbilityOption = document.getElementById(abilitySelectId).options[
+    document.getElementById(abilitySelectId).selectedIndex
+  ];
   const AbilityName = AbilityOption.textContent;
 
   let BRT = 1;
-  if (StatusName === "Burn") {
+  if (StatusName === "Burned") {
     BRT = AbilityName === "Adrenaline" ? 2 : 0.5;
   }
 
   let RL = 1;
   if (Category === "Physical") {
-    const cbRef = document.getElementById("Ref1");
+    const cbRef = document.getElementById(refCheckboxId);
     RL = cbRef.checked ? 0.5 : 1;
   } else if (Category === "Special") {
-    const cbLi = document.getElementById("Li1");
+    const cbLi = document.getElementById(liCheckboxId);
     RL = cbLi.checked ? 0.5 : 1;
   }
 
-  const V = Target !== 1 ? 0.75 : 1;
+  const V = Target !== "1" ? 0.75 : 1;
 
   const SR = CheckSR(moveType);
-  const FF = checkFF(moveType);
+  const FF = checkFF(moveType, Target);
 
   return BRT * RL * V * SR * FF;
 }
+
 
 function CheckSR(moveType) {
   const cbST = document.getElementById("ST");
@@ -610,8 +616,9 @@ function CheckSR(moveType) {
   }
 }
 
-function checkFF(moveType) {
-  const cbFF = document.getElementById("FF1");
+function checkFF(moveType, Target) {
+  const ffCheckboxId = Target === "1" ? "FF1" : "FF2";
+  const cbFF = document.getElementById(ffCheckboxId);
   return cbFF.checked && moveType === "Fire" ? 1.5 : 1;
 }
 

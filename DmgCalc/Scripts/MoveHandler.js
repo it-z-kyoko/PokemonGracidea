@@ -28,7 +28,6 @@ async function updateMoveResults(prefix) {
   }
   
   function selectOptionByName(name, prefix, move) {
-    // debugger;
     var options = document.getElementById("pokemon" + prefix + "move" + move).options;
     for (var i = 0; i < options.length; i++) {
         if (options[i].text === name) {
