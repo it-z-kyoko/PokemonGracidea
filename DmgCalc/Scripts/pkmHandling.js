@@ -23,22 +23,18 @@ async function updatePokemonSelection(
   p1T1Id,
   p1T2Id,
   natureid,
-  abilityid
+  abilityid,
+  target
 ) {
   const pokemonId = parseInt(document.getElementById(pokemonSelectId).value);
-  const selectedOption =
-    document.getElementById(pokemonSelectId).options[
-      document.getElementById(pokemonSelectId).selectedIndex
-    ];
+  const selectedOption = document.getElementById(pokemonSelectId).options[document.getElementById(pokemonSelectId).selectedIndex];
   const selectedName = selectedOption.textContent;
   const meinBild = document.getElementById(pokemonPictureId);
 
   meinBild.src = "../sprites/Gracidea-Dex/" + pokemonId + ".png";
 
   try {
-    const response = await fetch(
-      `Scripts/get_pokemon_details.php?pokemon_id=${pokemonId}&nickname=${selectedName}`
-    );
+    const response = await fetch(`Scripts/get_pokemon_details.php?pokemon_id=${pokemonId}&nickname=${selectedName}`);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -63,11 +59,12 @@ async function updatePokemonSelection(
     document.getElementById(SpeBaseStatId).value = pokemonData.SpeBase;
     document.getElementById(SpeEVId).value = pokemonData.speedEV;
     document.getElementById(SpeIVId).value = pokemonData.speedIV;
+
     const movearray = [pokemonData.Move1, pokemonData.Move2, pokemonData.Move3, pokemonData.Move4];
     var prefix = levelId.includes('2') ? '2' : '1';
     movearray.forEach(move => {
       if (move != null) {
-        selectOptionByName(move,prefix, movearray.indexOf(move)+1);
+        selectOptionByName(move, prefix, movearray.indexOf(move) + 1);
       }
     });
 
@@ -82,10 +79,15 @@ async function updatePokemonSelection(
     document.getElementById(p1T1Id).textContent = pokemonData.typ1;
     document.getElementById(p1T2Id).textContent = pokemonData.typ2;
 
+    // Populate gender select
+    const genderSelectId = `gender${prefix}select`;
+    await populateGenderSelect(pokemonId, genderSelectId);
+
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 }
+
 
 async function setAbility(pokemonSelectId, abilityid) {
   const pokemonId = parseInt(document.getElementById(pokemonSelectId).value);
@@ -646,3 +648,31 @@ document.addEventListener("input", function (event) {
     initializeCalculations();
   }
 });
+
+async function populateGenderSelect(pokemonId, selectId) {
+  try {
+    const response = await fetch(`Scripts/get_pokemon_gender.php?pokemon_id=${pokemonId}`);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const genderData = await response.json();
+
+    console.log(genderData); // Debug-Ausgabe der erhaltenen Daten
+
+    const genderSelect = document.getElementById(selectId);
+    genderSelect.innerHTML = ""; // Clear previous options
+
+    if (Array.isArray(genderData)) {
+      genderData.forEach(gender => {
+        const option = document.createElement("option");
+        option.value = gender;
+        option.textContent = gender;
+        genderSelect.appendChild(option);
+      });
+    } else {
+      console.error("Unexpected data format:", genderData);
+    }
+  } catch (error) {
+    console.error("Error fetching gender data:", error);
+  }
+}

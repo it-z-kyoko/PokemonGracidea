@@ -86,7 +86,9 @@
             </tr>
             <tr>
                 <td>Gender:</td>
-                <td><select name="gender2select" id="gender2select"></td>
+                <td><select name="gender2select" id="gender2select">
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Level:</td>
