@@ -59,8 +59,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     await setCheckboxAndTriggerChange("CurrHP2");
     initializeCalculations();
     moves();
-    await initMoveCalc1();
-    await initMoveCalc2();
 
     fillAttacks(1);
     fillAttacks(2);
@@ -75,6 +73,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
 function calc(pokemon) {
+  
   const triggeredElementId = event.target.id;
   const moveid = triggeredElementId.slice(0, -4); // Verwenden Sie 'const' hier
 
@@ -672,20 +671,6 @@ function getF3(item, ability, type1, type2, itemp2) {
 
 function checkBerry(itemp2) {
   return itemp2 === "y";
-}
-
-async function initMoveCalc1() {
-  await setCheckboxAndTriggerChange("1resultmovedmg1Crit");
-  await setCheckboxAndTriggerChange("1resultmovedmg2Crit");
-  await setCheckboxAndTriggerChange("1resultmovedmg3Crit");
-  await setCheckboxAndTriggerChange("1resultmovedmg4Crit");
-}
-
-async function initMoveCalc2() {
-  await setCheckboxAndTriggerChange("2resultmovedmg1Crit");
-  await setCheckboxAndTriggerChange("2resultmovedmg2Crit");
-  await setCheckboxAndTriggerChange("2resultmovedmg3Crit");
-  await setCheckboxAndTriggerChange("2resultmovedmg4Crit");
 }
 
 function setCheckboxAndTriggerChange(checkboxId) {

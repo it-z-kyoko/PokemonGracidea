@@ -127,7 +127,7 @@
                 <td><input type="number" id="AtkIV" min="0" max="31" step="1"  value=0></td>
                 <td><span id="resultAtk">0</span></td>
                 <td>
-                    <select name="Atkboost1" id="Atkboost1" style="background: none; width: 40px;padding:0px;text-align:center" onchange="initMoveCalc1();">
+                    <select name="Atkboost1" id="Atkboost1" style="background: none; width: 40px;padding:0px;text-align:center" onchange="updateMoveResults('1')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -151,7 +151,7 @@
                 <td><input type="number" id="DefIV" min="0" max="31" step="1"  value="0"></td>
                 <td><span id="resultDef">0</span></td>
                 <td>
-                    <select name="Defboost1" id="Defboost1" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc1();">
+                    <select name="Defboost1" id="Defboost1" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="updateMoveResults('1')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -175,7 +175,7 @@
                 <td><input type="number" id="SpAIV" min="0" max="31" step="1"  value="0"></td>
                 <td><span id="resultSpA">0</span></td>
                 <td>
-                    <select name="SpAboost1" id="SpAboost1" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc1();">
+                    <select name="SpAboost1" id="SpAboost1" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="updateMoveResults('1')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -199,7 +199,7 @@
                 <td><input type="number" id="SpDIV" min="0" max="31" step="1"  value="0"></td>
                 <td><span id="resultSpD">0</span></td>
                 <td>
-                    <select name="SpDboost1" id="SpDboost1" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc1();">
+                    <select name="SpDboost1" id="SpDboost1" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="updateMoveResults('1')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -223,7 +223,7 @@
                 <td><input type="number" id="SpeIV" min="0" max="31" step="1"  value="0"></td>
                 <td><span id="resultSpe">0</span></td>
                 <td>
-                    <select name="Speboost1" id="Speboost1" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc1();">
+                    <select name="Speboost1" id="Speboost1" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="updateMoveResults('1')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -278,18 +278,18 @@
             </tr>
             <tr>
                 <td>Ability:</td>
-                <td><select name="ability1select" id="ability1select" onchange="initMoveCalc1();"></select></td>
+                <td><select name="ability1select" id="ability1select" onchange="updateMoveResults('1')"></select></td>
             </tr>
             <tr>
                 <td>Item:</td>
-                <td><select name="item1select" id="item1select" onchange="initMoveCalc1();">
+                <td><select name="item1select" id="item1select" onchange="updateMoveResults('1')">
                         <option value="none">No Item</option>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Status:</td>
-                <td><select name="status1select" id="status1select" onchange="initMoveCalc1();">
+                <td><select name="status1select" id="status1select" onchange="updateMoveResults('1')">
                         <option value="Healthy">Healthy</option>
                         <option value="Burn">Burned</option>
                     </select>

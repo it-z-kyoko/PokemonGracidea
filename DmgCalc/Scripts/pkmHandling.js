@@ -612,8 +612,6 @@ async function updatePokemon() {
     );
     
   }
-  await initMoveCalc1();
-  await initMoveCalc2();
   await setCheckboxAndTriggerChange("CurrHP1");
   await setCheckboxAndTriggerChange("CurrHP2");
   initializeCalculations();

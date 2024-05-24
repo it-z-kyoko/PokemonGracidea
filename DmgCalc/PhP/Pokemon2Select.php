@@ -133,7 +133,7 @@
                 <td><input type="number" id="AtkIV2" min="0" max="31" step="1" value=0></td>
                 <td><span id="resultAtk2">0</span></td>
                 <td>
-                    <select name="Atkboost2" id="Atkboost2" style="background: none; width: 40px;padding:0px;text-align:center" onchange="initMoveCalc2();">
+                    <select name="Atkboost2" id="Atkboost2" style="background: none; width: 40px;padding:0px;text-align:center" onchange="updateMoveResults('2')">
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
                         <option value="+3">+3</option>
@@ -157,7 +157,7 @@
                 <td><input type="number" id="DefIV2" min="0" max="31" step="1" value=0></td>
                 <td><span id="resultDef2">0</span></td>
                 <td>
-                    <select name="Defboost2" id="Defboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc2();">
+                    <select name="Defboost2" id="Defboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="updateMoveResults('2')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -181,7 +181,7 @@
                 <td><input type="number" id="SpAIV2" min="0" max="31" step="1" value=0></td>
                 <td><span id="resultSpA2">0</span></td>
                 <td>
-                    <select name="SpAboost2" id="SpAboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc2();">
+                    <select name="SpAboost2" id="SpAboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="updateMoveResults('2')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -205,7 +205,7 @@
                 <td><input type="number" id="SpDIV2" min="0" max="31" step="1" value=0></td>
                 <td><span id="resultSpD2">0</span></td>
                 <td>
-                    <select name="SpDboost2" id="SpDboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc2();">
+                    <select name="SpDboost2" id="SpDboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="updateMoveResults('2')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -229,7 +229,7 @@
                 <td><input type="number" id="SpeIV2" min="0" max="31" step="1" value=0></td>
                 <td><span id="resultSpe2">0</span></td>
                 <td>
-                    <select name="Speboost2" id="Speboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc2();">
+                    <select name="Speboost2" id="Speboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="updateMoveResults('2')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -285,21 +285,21 @@
             <tr>
                 <td>Ability:</td>
                 <td>
-                    <select name="ability2select" id="ability2select" onchange="initMoveCalc2()">
+                    <select name="ability2select" id="ability2select" onchange="updateMoveResults('2')">
 
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Item:</td>
-                <td><select name="item2select" id="item2select" onchange="initMoveCalc2()">
+                <td><select name="item2select" id="item2select" onchange="updateMoveResults('2')">
                         <option value="none">No Item</option>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Status:</td>
-                <td><select name="status2select" id="status2select" onchange="initMoveCalc2()">
+                <td><select name="status2select" id="status2select" onchange="updateMoveResults('2')">
                         <option value="Healthy">Healthy</option>
                         <option value="Burn">Burned</option>
                     </select>
