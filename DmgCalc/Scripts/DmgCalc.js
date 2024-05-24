@@ -93,8 +93,10 @@ function calc(pokemon) {
   if (selectedMoveId != null && moveid != "") {
     if (pokemon === "pokemon1") {
       fillResult(selectedMoveId, moveid, "1");
+      fillAttacks(1);
     } else if (pokemon === "pokemon2") {
       fillResult(selectedMoveId, moveid, "2");
+      fillAttacks(2);
     }
   }
 }
