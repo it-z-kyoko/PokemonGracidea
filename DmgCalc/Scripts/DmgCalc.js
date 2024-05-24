@@ -717,6 +717,7 @@ function fillAttacks(nr) {
 }
 
 function healthupdate() {
+  debugger;
   let maxHP;
   let nr;
   const triggeredElementId = event.target.id;

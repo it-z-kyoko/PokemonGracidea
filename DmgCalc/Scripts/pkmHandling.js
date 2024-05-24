@@ -133,12 +133,13 @@ function calcStat(BaseStat, IV, EV, level) {
   return stat;
 }
 
-function CalcHP(BaseStat, IV, EV, level, CurrHP) {
+function CalcHP(BaseStat, IV, EV, level, CurrHP,resultElementId) {
   let stat = Math.floor(
     ((2 * BaseStat + IV + Math.floor(EV / 4)) * level) / 100 + level + 10
   );
   document.getElementById(CurrHP).max = stat;
   document.getElementById(CurrHP).value = stat;
+  document.getElementById(resultElementId).textContent = stat;
   setCheckboxAndTriggerChange(CurrHP);
   return stat;
 }
@@ -160,7 +161,7 @@ function calculateAttributeStat(
   let result;
   // Berechne den Wert ohne Berücksichtigung der Natur
   if (attribute === "HP" || attribute === "HP 2") {
-    result = CalcHP(baseStat, ev, iv, level, CurrHP);
+    result = CalcHP(baseStat, ev, iv, level, CurrHP, resultElementId);
   } else {
     result = calcStat(baseStat, ev, iv, level, nature);
   }
@@ -611,9 +612,10 @@ async function updatePokemon() {
   }
   await initMoveCalc1();
   await initMoveCalc2();
-  initializeCalculations();
   await setCheckboxAndTriggerChange("CurrHP1");
   await setCheckboxAndTriggerChange("CurrHP2");
+  initializeCalculations();
+
 }
 
 function handleEmptyInput(inputElement) {
