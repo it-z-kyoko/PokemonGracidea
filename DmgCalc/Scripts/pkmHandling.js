@@ -660,7 +660,7 @@ async function populateGenderSelect(pokemonId, selectId) {
     const genderData = await response.json();
 
     const genderSelect = document.getElementById(selectId);
-    genderSelect.innerHTML = ""; // Clear previous options
+    genderSelect.innerHTML = "";
 
     if (Array.isArray(genderData)) {
       genderData.forEach(gender => {
@@ -690,13 +690,13 @@ async function populateMoves(pokemonId, prefix) {
     for (let i = 1; i <= 4; i++) {
       const selectId = `pokemon${prefix}move${i}`;
       const moveSelect = document.getElementById(selectId);
-      moveSelect.innerHTML = ""; // Clear previous options
+      moveSelect.innerHTML = "";
 
       if (Array.isArray(movesData)) {
         movesData.forEach(move => {
           const option = document.createElement("option");
-          option.value = move.ID; // Assuming the move object has an ID property
-          option.textContent = move.Name; // Assuming the move object has a Name property
+          option.value = move.ID;
+          option.textContent = move.Name;
           moveSelect.appendChild(option);
         });
       } else {
