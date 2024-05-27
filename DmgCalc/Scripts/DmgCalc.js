@@ -739,7 +739,6 @@ async function getMoveData(moveid) {
   let moveData;
   try {
     const url = `Scripts/getmovesdetails.php?id=${moveid}`;
-    console.log(`Fetching data from URL: ${url}`);
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -747,7 +746,6 @@ async function getMoveData(moveid) {
     }
     moveData = await response.json();
 
-    console.log(moveData);
     if (moveData.Category === "Status") {
       return null;
     }

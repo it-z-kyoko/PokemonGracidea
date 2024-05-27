@@ -60,8 +60,10 @@ async function updatePokemonSelection(
     document.getElementById(SpeEVId).value = pokemonData.speedEV;
     document.getElementById(SpeIVId).value = pokemonData.speedIV;
 
+    
     const movearray = [pokemonData.Move1, pokemonData.Move2, pokemonData.Move3, pokemonData.Move4];
     var prefix = levelId.includes('2') ? '2' : '1';
+    await populateMoves(pokemonId, prefix);
     movearray.forEach(move => {
       if (move != null) {
         selectOptionByName(move, prefix, movearray.indexOf(move) + 1);
@@ -82,6 +84,8 @@ async function updatePokemonSelection(
     // Populate gender select
     const genderSelectId = `gender${prefix}select`;
     await populateGenderSelect(pokemonId, genderSelectId);
+
+
 
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -655,8 +659,6 @@ async function populateGenderSelect(pokemonId, selectId) {
     }
     const genderData = await response.json();
 
-    console.log(genderData); // Debug-Ausgabe der erhaltenen Daten
-
     const genderSelect = document.getElementById(selectId);
     genderSelect.innerHTML = ""; // Clear previous options
 
@@ -672,5 +674,36 @@ async function populateGenderSelect(pokemonId, selectId) {
     }
   } catch (error) {
     console.error("Error fetching gender data:", error);
+  }
+}
+
+async function populateMoves(pokemonId, prefix) {
+  try {
+    const response = await fetch(`Scripts/getmovespokemon.php?pokemon_id=${pokemonId}`);
+   
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const movesData = await response.json();
+    
+    for (let i = 1; i <= 4; i++) {
+      const selectId = `pokemon${prefix}move${i}`;
+      const moveSelect = document.getElementById(selectId);
+      moveSelect.innerHTML = ""; // Clear previous options
+
+      if (Array.isArray(movesData)) {
+        movesData.forEach(move => {
+          const option = document.createElement("option");
+          option.value = move.ID; // Assuming the move object has an ID property
+          option.textContent = move.Name; // Assuming the move object has a Name property
+          moveSelect.appendChild(option);
+        });
+      } else {
+        console.error("Unexpected data format:", movesData);
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching moves data:", error);
   }
 }

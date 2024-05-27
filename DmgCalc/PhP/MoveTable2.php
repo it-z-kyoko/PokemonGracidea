@@ -4,15 +4,6 @@
         <tr>
             <td>
                 <select id="pokemon2move1" onchange="updateMoveResults('2')">
-                    <?php
-                    if ($resultmoves->numColumns() > 0) {
-                        while ($row = $resultmoves->fetchArray()) {
-                            echo '<option value="' . $row["ID"] . '">' . $row["Name"] . '</option>';
-                        }
-                    } else {
-                        echo '<option>Keine Daten gefunden</option>';
-                    }
-                    ?>
                 </select>
             </td>
             <td>
@@ -23,15 +14,7 @@
         <tr>
             <td>
                 <select id="pokemon2move2" onchange="updateMoveResults('2')">
-                    <?php
-                    if ($resultmoves->numColumns() > 0) {
-                        while ($row = $resultmoves->fetchArray()) {
-                            echo '<option value="' . $row["ID"] . '">' . $row["Name"] . '</option>';
-                        }
-                    } else {
-                        echo '<option>Keine Daten gefunden</option>';
-                    }
-                    ?>
+
                 </select>
             </td>
             <td>
@@ -42,15 +25,7 @@
         <tr>
             <td>
                 <select id="pokemon2move3" onchange="updateMoveResults('2')">
-                    <?php
-                    if ($resultmoves->numColumns() > 0) {
-                        while ($row = $resultmoves->fetchArray()) {
-                            echo '<option value="' . $row["ID"] . '">' . $row["Name"] . '</option>';
-                        }
-                    } else {
-                        echo '<option>Keine Daten gefunden</option>';
-                    }
-                    ?>
+
                 </select>
             </td>
             <td>
@@ -61,15 +36,7 @@
         <tr>
             <td>
                 <select id="pokemon2move4" onchange="updateMoveResults('2')">
-                    <?php
-                    if ($resultmoves->numColumns() > 0) {
-                        while ($row = $resultmoves->fetchArray()) {
-                            echo '<option value="' . $row["ID"] . '">' . $row["Name"] . '</option>';
-                        }
-                    } else {
-                        echo '<option>Keine Daten gefunden</option>';
-                    }
-                    ?>
+
                 </select>
             </td>
             <td>

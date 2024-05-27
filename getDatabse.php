@@ -64,14 +64,13 @@ async function processPokemon() {
                 }
 
                 const sqlStatement = `INSERT INTO pokemon_moves (Pokemon, Move, Category, Nr) VALUES (${pokemon.ID}, '${moveId}', '${condition}', '${nr}');`;
-                /*await fetch('execute_sql.php', {
+                await fetch('execute_sql.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ sql: sqlStatement })
-                });*/
-                console.log(sqlStatement);
+                });
             }
         } catch (error) {
             errors.push(name);
