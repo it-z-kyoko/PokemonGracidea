@@ -294,6 +294,11 @@
                 <td>Item:</td>
                 <td><select name="item2select" id="item2select" onchange="updateMoveResults('2')">
                         <option value="none">No Item</option>
+                    <?php
+                    while ($row = $resultitems->fetchArray(SQLITE3_ASSOC)) {
+                        echo '<option value="' . $row['ID'] . '">' . $row['Name'] . '</option>';
+                    }
+                    ?>
                     </select>
                 </td>
             </tr>

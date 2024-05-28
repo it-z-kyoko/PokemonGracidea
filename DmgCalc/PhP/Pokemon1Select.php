@@ -280,12 +280,17 @@
                 <td>Ability:</td>
                 <td><select name="ability1select" id="ability1select" onchange="updateMoveResults('1')"></select></td>
             </tr>
-            <tr>
-                <td>Item:</td>
-                <td><select name="item1select" id="item1select" onchange="updateMoveResults('1')">
-                        <option value="none">No Item</option>
-                    </select>
-                </td>
+            <td>Item:</td>
+            <td>
+                <select name="item1select" id="item1select" onchange="updateMoveResults('1')">
+                    <option value="none">No Item</option>
+                    <?php
+                    while ($row = $resultitems->fetchArray(SQLITE3_ASSOC)) {
+                        echo '<option value="' . $row['ID'] . '">' . $row['Name'] . '</option>';
+                    }
+                    ?>
+                </select>
+            </td>
             </tr>
             <tr>
                 <td>Status:</td>
