@@ -144,13 +144,13 @@ async function calcDmg(triggered, target, Z, moveData) {
       pType1 = "p2T1";
       pType2 = "p2T2";
       Defid = "resultDef2";
-      SpDefid = "resultSpDef2";
+      SpDefid = "resultSpD2";
     } else if (target === "2") {
       levelid = "level2";
       pType1 = "p1T1";
       pType2 = "p1T2";
       Defid = "resultDef";
-      SpDefid = "resultSpDef";
+      SpDefid = "resultSpD";
     } else {
       throw new Error("Invalid target");
     }
@@ -506,7 +506,7 @@ function getDef(Category, target) {
     );
   } else if (Category === "Special") {
     return parseInt(
-      document.getElementById(target === "1" ? "resultSpDef2" : "resultSpDef")
+      document.getElementById(target === "1" ? "resultSpD2" : "resultSpD")
         .textContent
     );
   } else {
