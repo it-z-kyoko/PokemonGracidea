@@ -41,35 +41,23 @@
     <div>
         <select id="pokemonSelect2" onchange="updatePokemon()">
             <?php
-            // Führe eine Abfrage aus, um alle Einträge aus der Tabelle pokemondata zu erhalten
             $query = "SELECT * FROM pokemondata ORDER BY Name";
             $result = $conn->query($query);
-
-            // Überprüfe, ob die Abfrage erfolgreich war
             if ($result->numColumns() > 0) {
-                // Initialisiere Variable, um den aktuellen Pokémon-Namen zu speichern
                 $currentPokemon = "";
 
-                // Durchlaufe jedes Ergebnis der Abfrage
                 while ($row = $result->fetchArray()) {
-                    // Überprüfe, ob der Pokémon-Name sich geändert hat
                     if ($currentPokemon != $row['Name']) {
-                        // Schließe vorheriges optgroup-Tag, falls vorhanden
                         if ($currentPokemon != "") {
                             echo '</optgroup>';
                         }
-                        // Beginne ein neues optgroup-Tag mit dem neuen Pokémon-Namen
                         echo '<optgroup label="' . $row['Name'] . '">';
-                        // Setze den aktuellen Pokémon-Namen auf den neuen Wert
                         $currentPokemon = $row['Name'];
                     }
-                    // Erstelle ein option-Element für den aktuellen Eintrag
                     echo '<option value="' . $row['ImgID'] . '">' . $row['Nickname'] . '</option>';
                 }
-                // Schließe das letzte optgroup-Tag
                 echo '</optgroup>';
             } else {
-                // Ausgabe, wenn keine Daten gefunden wurden
                 echo 'Keine Daten gefunden.';
             }
             ?>
@@ -86,7 +74,9 @@
             </tr>
             <tr>
                 <td>Gender:</td>
-                <td><select name="gender2select" id="gender2select"></td>
+                <td><select name="gender2select" id="gender2select">
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Level:</td>
@@ -131,7 +121,7 @@
                 <td><input type="number" id="AtkIV2" min="0" max="31" step="1" value=0></td>
                 <td><span id="resultAtk2">0</span></td>
                 <td>
-                    <select name="Atkboost2" id="Atkboost2" style="background: none; width: 40px;padding:0px;text-align:center" onchange="initMoveCalc2();">
+                    <select name="Atkboost2" id="Atkboost2" style="background: none; width: 40px;padding:0px;text-align:center" onchange="updateMoveResults('2')">
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
                         <option value="+3">+3</option>
@@ -155,7 +145,7 @@
                 <td><input type="number" id="DefIV2" min="0" max="31" step="1" value=0></td>
                 <td><span id="resultDef2">0</span></td>
                 <td>
-                    <select name="Defboost2" id="Defboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc2();">
+                    <select name="Defboost2" id="Defboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="updateMoveResults('2')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -179,7 +169,7 @@
                 <td><input type="number" id="SpAIV2" min="0" max="31" step="1" value=0></td>
                 <td><span id="resultSpA2">0</span></td>
                 <td>
-                    <select name="SpAboost2" id="SpAboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc2();">
+                    <select name="SpAboost2" id="SpAboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="updateMoveResults('2')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -203,7 +193,7 @@
                 <td><input type="number" id="SpDIV2" min="0" max="31" step="1" value=0></td>
                 <td><span id="resultSpD2">0</span></td>
                 <td>
-                    <select name="SpDboost2" id="SpDboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc2();">
+                    <select name="SpDboost2" id="SpDboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="updateMoveResults('2')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -227,7 +217,7 @@
                 <td><input type="number" id="SpeIV2" min="0" max="31" step="1" value=0></td>
                 <td><span id="resultSpe2">0</span></td>
                 <td>
-                    <select name="Speboost2" id="Speboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="initMoveCalc2();">
+                    <select name="Speboost2" id="Speboost2" style="background: none; width: 40px; padding: 0px;text-align:center" onchange="updateMoveResults('2')">
                         <option value="0">0</option>
                         <option value="+1">+1</option>
                         <option value="+2">+2</option>
@@ -283,21 +273,26 @@
             <tr>
                 <td>Ability:</td>
                 <td>
-                    <select name="ability2select" id="ability2select" onchange="initMoveCalc2()">
+                    <select name="ability2select" id="ability2select" onchange="updateMoveResults('2')">
 
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Item:</td>
-                <td><select name="item2select" id="item2select" onchange="initMoveCalc2()">
+                <td><select name="item2select" id="item2select" onchange="updateMoveResults('2')">
                         <option value="none">No Item</option>
+                    <?php
+                    while ($row = $resultitems->fetchArray(SQLITE3_ASSOC)) {
+                        echo '<option value="' . $row['ID'] . '">' . $row['Name'] . '</option>';
+                    }
+                    ?>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Status:</td>
-                <td><select name="status2select" id="status2select" onchange="initMoveCalc2()">
+                <td><select name="status2select" id="status2select" onchange="updateMoveResults('2')">
                         <option value="Healthy">Healthy</option>
                         <option value="Burn">Burned</option>
                     </select>

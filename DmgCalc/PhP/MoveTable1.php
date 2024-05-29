@@ -3,7 +3,7 @@
     <tbody>
         <tr>
             <td>
-                <select id="pokemon1move1" onchange="moves()">
+                <select id="pokemon1move1" onchange="updateMoveResults('1')">
                     <?php
                     if ($resultmoves->numColumns() > 0) {
                         while ($row = $resultmoves->fetchArray()) {
@@ -22,7 +22,7 @@
         </tr>
         <tr>
             <td>
-                <select id="pokemon1move2" onchange="moves()">
+                <select id="pokemon1move2" onchange="updateMoveResults('1')">
                     <?php
                     if ($resultmoves->numColumns() > 0) {
                         while ($row = $resultmoves->fetchArray()) {
@@ -41,7 +41,7 @@
         </tr>
         <tr>
             <td>
-                <select id="pokemon1move3" onchange="moves()">
+                <select id="pokemon1move3" onchange="updateMoveResults('1')">
                     <?php
                     if ($resultmoves->numColumns() > 0) {
                         while ($row = $resultmoves->fetchArray()) {
@@ -60,7 +60,7 @@
         </tr>
         <tr>
             <td>
-                <select id="pokemon1move4" onchange="moves()">
+                <select id="pokemon1move4" onchange="updateMoveResults('1')">
                     <?php
                     if ($resultmoves->numColumns() > 0) {
                         while ($row = $resultmoves->fetchArray()) {

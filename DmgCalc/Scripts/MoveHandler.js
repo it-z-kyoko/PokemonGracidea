@@ -1,11 +1,11 @@
 async function updateMoveResults(prefix) {
-
     const moveIds = [];
     for (let i = 1; i <= 4; i++) {
       const selectedMoveId = parseInt(
         document.getElementById( "pokemon" + prefix + "move" + i).value
       );
       moveIds.push(selectedMoveId);
+      setCheckboxAndTriggerChange(prefix + "resultmovedmg" + i + "Crit");
     }
   
     const responses = await Promise.all(

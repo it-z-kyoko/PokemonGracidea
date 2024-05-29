@@ -10,6 +10,9 @@ $resultPokemon = $conn->query($query);
 
 $query = "SELECT id, name FROM moves";
 $resultmoves = $conn->query($query);
+
+$query = "SELECT * FROM HeldItems";
+$resultitems = $conn->query($query);
 ?>
 
 <!DOCTYPE html>

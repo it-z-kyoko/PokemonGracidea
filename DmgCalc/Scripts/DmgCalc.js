@@ -59,8 +59,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     await setCheckboxAndTriggerChange("CurrHP2");
     initializeCalculations();
     moves();
-    await initMoveCalc1();
-    await initMoveCalc2();
 
     fillAttacks(1);
     fillAttacks(2);
@@ -75,6 +73,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
 function calc(pokemon) {
+  
   const triggeredElementId = event.target.id;
   const moveid = triggeredElementId.slice(0, -4); // Verwenden Sie 'const' hier
 
@@ -94,8 +93,10 @@ function calc(pokemon) {
   if (selectedMoveId != null && moveid != "") {
     if (pokemon === "pokemon1") {
       fillResult(selectedMoveId, moveid, "1");
+      fillAttacks(1);
     } else if (pokemon === "pokemon2") {
       fillResult(selectedMoveId, moveid, "2");
+      fillAttacks(2);
     }
   }
 }
@@ -143,13 +144,13 @@ async function calcDmg(triggered, target, Z, moveData) {
       pType1 = "p2T1";
       pType2 = "p2T2";
       Defid = "resultDef2";
-      SpDefid = "resultSpDef2";
+      SpDefid = "resultSpD2";
     } else if (target === "2") {
       levelid = "level2";
       pType1 = "p1T1";
       pType2 = "p1T2";
       Defid = "resultDef";
-      SpDefid = "resultSpDef";
+      SpDefid = "resultSpD";
     } else {
       throw new Error("Invalid target");
     }
@@ -505,7 +506,7 @@ function getDef(Category, target) {
     );
   } else if (Category === "Special") {
     return parseInt(
-      document.getElementById(target === "1" ? "resultSpDef2" : "resultSpDef")
+      document.getElementById(target === "1" ? "resultSpD2" : "resultSpD")
         .textContent
     );
   } else {
@@ -674,20 +675,6 @@ function checkBerry(itemp2) {
   return itemp2 === "y";
 }
 
-async function initMoveCalc1() {
-  await setCheckboxAndTriggerChange("1resultmovedmg1Crit");
-  await setCheckboxAndTriggerChange("1resultmovedmg2Crit");
-  await setCheckboxAndTriggerChange("1resultmovedmg3Crit");
-  await setCheckboxAndTriggerChange("1resultmovedmg4Crit");
-}
-
-async function initMoveCalc2() {
-  await setCheckboxAndTriggerChange("2resultmovedmg1Crit");
-  await setCheckboxAndTriggerChange("2resultmovedmg2Crit");
-  await setCheckboxAndTriggerChange("2resultmovedmg3Crit");
-  await setCheckboxAndTriggerChange("2resultmovedmg4Crit");
-}
-
 function setCheckboxAndTriggerChange(checkboxId) {
   return new Promise((resolve, reject) => {
     const checkbox = document.getElementById(checkboxId);
@@ -717,6 +704,7 @@ function fillAttacks(nr) {
 }
 
 function healthupdate() {
+  
   let maxHP;
   let nr;
   const triggeredElementId = event.target.id;
@@ -751,7 +739,6 @@ async function getMoveData(moveid) {
   let moveData;
   try {
     const url = `Scripts/getmovesdetails.php?id=${moveid}`;
-    console.log(`Fetching data from URL: ${url}`);
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -759,7 +746,6 @@ async function getMoveData(moveid) {
     }
     moveData = await response.json();
 
-    console.log(moveData);
     if (moveData.Category === "Status") {
       return null;
     }
