@@ -41,35 +41,23 @@
     <div>
         <select id="pokemonSelect2" onchange="updatePokemon()">
             <?php
-            // Führe eine Abfrage aus, um alle Einträge aus der Tabelle pokemondata zu erhalten
             $query = "SELECT * FROM pokemondata ORDER BY Name";
             $result = $conn->query($query);
-
-            // Überprüfe, ob die Abfrage erfolgreich war
             if ($result->numColumns() > 0) {
-                // Initialisiere Variable, um den aktuellen Pokémon-Namen zu speichern
                 $currentPokemon = "";
 
-                // Durchlaufe jedes Ergebnis der Abfrage
                 while ($row = $result->fetchArray()) {
-                    // Überprüfe, ob der Pokémon-Name sich geändert hat
                     if ($currentPokemon != $row['Name']) {
-                        // Schließe vorheriges optgroup-Tag, falls vorhanden
                         if ($currentPokemon != "") {
                             echo '</optgroup>';
                         }
-                        // Beginne ein neues optgroup-Tag mit dem neuen Pokémon-Namen
                         echo '<optgroup label="' . $row['Name'] . '">';
-                        // Setze den aktuellen Pokémon-Namen auf den neuen Wert
                         $currentPokemon = $row['Name'];
                     }
-                    // Erstelle ein option-Element für den aktuellen Eintrag
                     echo '<option value="' . $row['ImgID'] . '">' . $row['Nickname'] . '</option>';
                 }
-                // Schließe das letzte optgroup-Tag
                 echo '</optgroup>';
             } else {
-                // Ausgabe, wenn keine Daten gefunden wurden
                 echo 'Keine Daten gefunden.';
             }
             ?>
