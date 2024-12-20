@@ -2,6 +2,7 @@
 include_once("../Classes/Pokemon.php");
 include_once("../Classes/DBConnection.php");
 
+//ToDo: Sprites #7 @it-z-kyoko
 
 $conn = DBConnection::getConnection();
 
